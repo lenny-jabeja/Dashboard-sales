@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Test Dashboard Sales</title>
+  <meta name="description" content="Zwart-wit salesdashboard voor het marketingteam: hero, KPI's en een werkblad met alle leads.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <style>
+    html{color-scheme:light dark}
+    body{margin:0}
+    img{max-width:100%}
+    [hidden]{display:none!important}
+  </style>
+</head>
+<body>
+<style>
+/* ============ tokens ============ */
+:root{
+  --paper:#F2F1ED;
+  --surface:#FFFFFF;
+  --surface-2:#FAF9F6;
+  --surface-3:#EBE9E3;
+  --ink:#0B0B0C;
+  --ink-2:#3B3A3B;
+  --graphite:#6E6D68;
+  --mist:#9C9A94;
+  --line:#DFDDD6;
+  --line-2:#C7C4BB;
+  --inv-ground:#0B0B0C;
+  --inv-ink:#F5F4F0;
+  --shadow:0 1px 0 rgba(11,11,12,.05);
+  --focus:#0B0B0C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A0A0B;
+    --surface:#121213;
+    --surface-2:#171718;
+    --surface-3:#202021;
+    --ink:#F4F3EF;
+    --ink-2:#CFCDC7;
+    --graphite:#918F89;
+    --mist:#6D6B66;
+    --line:#282829;
+    --line-2:#3C3C3E;
+    --inv-ground:#F4F3EF;
+    --inv-ink:#0B0B0C;
+    --shadow:0 1px 0 rgba(0,0,0,.4);
+    --focus:#F4F3EF;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A0A0B;
+  --surface:#121213;
+  --surface-2:#171718;
+  --surface-3:#202021;
+  --ink:#F4F3EF;
+  --ink-2:#CFCDC7;
+  --graphite:#918F89;
+  --mist:#6D6B66;
+  --line:#282829;
+  --line-2:#3C3C3E;
+  --inv-ground:#F4F3EF;
+  --inv-ink:#0B0B0C;
+  --shadow:0 1px 0 rgba(0,0,0,.4);
+  --focus:#F4F3EF;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1560px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+
+/* ============ type helpers ============ */
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mist);
+}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;margin:0;text-wrap:balance}
+
+/* ============ topbar ============ */
+.topbar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  border-bottom:1px solid var(--line);
+  padding-block:14px;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand-mark{
+  width:26px;height:26px;border:1.5px solid var(--ink);border-radius:2px;
+  display:grid;place-items:center;font-family:Archivo;font-weight:800;font-size:13px;
+}
+.brand-name{font-family:Archivo;font-weight:700;letter-spacing:-.01em;font-size:15px}
+.brand-sub{color:var(--mist);font-size:12px;border-left:1px solid var(--line);padding-left:10px;margin-left:2px}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sync{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--graphite);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 8px;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--mist);flex:none}
+.sync.live .dot{background:var(--ink)}
+.sync.live .dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 14%,transparent)}
+
+/* ============ buttons ============ */
+.btn{
+  font:inherit;font-weight:500;font-size:13px;
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--line-2);border-radius:3px;
+  padding:7px 12px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background .12s ease,border-color .12s ease,color .12s ease;
+}
+.btn:hover{border-color:var(--ink);background:var(--surface-2)}
+.btn:active{transform:translateY(.5px)}
+.btn-solid{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
+.btn-solid:hover{background:var(--ink-2);border-color:var(--ink-2);color:var(--inv-ink)}
+.btn-ghost{border-color:transparent;background:transparent;color:var(--graphite)}
+.btn-ghost:hover{border-color:var(--line);color:var(--ink);background:var(--surface)}
+.btn-sm{padding:5px 9px;font-size:12px}
+.kbd{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;
+  border:1px solid var(--line-2);border-bottom-width:2px;border-radius:3px;
+  padding:1px 4px;color:var(--graphite);background:var(--surface);
+}
+:where(button,a,input,[tabindex]):focus-visible{
+  outline:2px solid var(--focus);outline-offset:2px;border-radius:3px;
+}
+
+/* ============ hero ============ */
+.hero{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:48px;align-items:end;
+  padding-block:52px 34px;
+  border-bottom:1px solid var(--ink);
+}
+.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.hero-kicker .rule{height:1px;flex:1;background:var(--line-2);max-width:120px}
+h1.hero-title{
+  font-weight:800;
+  font-size:clamp(46px,8.4vw,108px);
+  line-height:.86;
+  letter-spacing:-.045em;
+  text-transform:uppercase;
+}
+h1.hero-title .thin{font-weight:600;color:var(--graphite)}
+.hero-lede{
+  margin:22px 0 0;max-width:52ch;color:var(--ink-2);font-size:15.5px;line-height:1.6;
+}
+.hero-meta{display:flex;gap:0;flex-wrap:wrap;margin-top:26px;border-top:1px solid var(--line)}
+.hero-meta div{padding:12px 22px 0 0;margin-right:22px;border-right:1px solid var(--line)}
+.hero-meta div:last-child{border-right:0;margin-right:0}
+.hero-meta dt{margin:0 0 3px}
+.hero-meta dd{margin:0;font-family:Archivo;font-weight:700;font-size:17px;letter-spacing:-.01em}
+
+/* pipeline meter */
+.meter{border:1px solid var(--line);background:var(--surface);padding:18px 18px 16px}
+.meter-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.meter-total{font-family:Archivo;font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1}
+.meter-bar{display:flex;height:34px;gap:2px;margin-bottom:12px}
+.meter-seg{position:relative;min-width:3px;display:grid;place-items:center;overflow:hidden}
+.meter-seg span{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
+  mix-blend-mode:normal;
+}
+.meter-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px}
+.leg{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2)}
+.leg i{width:10px;height:10px;flex:none;border:1px solid var(--ink)}
+.leg b{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11.5px}
+
+/* ============ quickbar ============ */
+.quickbar{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+  padding-block:16px;border-bottom:1px solid var(--line);
+}
+.quickbar .eyebrow{margin-right:6px}
+.quickbar .spacer{flex:1}
+
+/* ============ kpi row ============ */
+.kpis{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  border-bottom:1px solid var(--line);
+}
+.kpi{padding:20px 22px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.kpi:last-child{border-right:0}
+.kpi-val{font-family:Archivo;font-weight:800;font-size:28px;letter-spacing:-.025em;line-height:1}
+.kpi-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
+.delta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite)}
+.delta.up::before{content:"▲ ";font-size:8px}
+.delta.down::before{content:"▼ ";font-size:8px}
+.spark{display:block;color:var(--ink)}
+
+/* ============ slide ============ */
+.slide-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:34px 14px}
+.slide-head h2{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.slide-head .sep{color:var(--line-2)}
+.slide-head p{margin:0;color:var(--graphite);font-size:13px}
+
+.slide{
+  border:1px solid var(--ink);background:var(--surface);
+  display:grid;grid-template-columns:236px minmax(0,1fr) 320px;
+  align-items:stretch;
+}
+
+/* rail */
+.rail{border-right:1px solid var(--line);padding:18px 0;display:flex;flex-direction:column;gap:22px}
+.rail-block{padding-inline:16px}
+.rail-block > .eyebrow{display:block;margin-bottom:9px}
+.views{display:flex;flex-direction:column;gap:1px}
+.view-btn{
+  font:inherit;text-align:left;background:transparent;border:0;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  padding:7px 9px;border-radius:3px;color:var(--ink-2);font-size:13px;
+}
+.view-btn:hover{background:var(--surface-3)}
+.view-btn .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mist)}
+.view-btn[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:500}
+.view-btn[aria-pressed="true"] .cnt{color:var(--inv-ink);opacity:.7}
+.view-btn .tick{width:3px;height:14px;background:transparent;flex:none;border-radius:2px}
+.view-btn[aria-pressed="true"] .tick{background:var(--inv-ink)}
+
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.03em;
+  border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;
+  background:transparent;color:var(--graphite);cursor:pointer;
+}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
+
+.owners{display:flex;flex-direction:column;gap:2px}
+.owner-btn{
+  display:flex;align-items:center;gap:9px;font:inherit;font-size:13px;
+  background:transparent;border:0;cursor:pointer;padding:5px 9px;border-radius:3px;color:var(--ink-2);
+}
+.owner-btn:hover{background:var(--surface-3)}
+.owner-btn[aria-pressed="true"]{background:var(--surface-3);color:var(--ink);font-weight:500}
+.owner-btn .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mist)}
+
+.avatar{
+  width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;
+  border:1px solid var(--ink);color:var(--ink);background:var(--surface);
+}
+.avatar.filled{background:var(--inv-ground);color:var(--inv-ink)}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:7px}
+.fn-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}
+.fn-label{font-size:11.5px;color:var(--ink-2)}
+.fn-count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite)}
+.fn-track{grid-column:1/-1;height:9px;background:var(--surface-3);position:relative}
+.fn-fill{height:100%;background:var(--ink);border-radius:0 2px 2px 0}
+
+/* center */
+.center{min-width:0;display:flex;flex-direction:column}
+.toolbar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);
+}
+.search{
+  display:flex;align-items:center;gap:8px;flex:1;min-width:200px;
+  border:1px solid var(--line-2);background:var(--surface);border-radius:3px;padding:0 10px;
+}
+.search:focus-within{border-color:var(--ink)}
+.search svg{flex:none;color:var(--mist)}
+.search input{
+  font:inherit;font-size:13.5px;border:0;background:transparent;color:var(--ink);
+  padding:8px 0;width:100%;outline:none;
+}
+.search input::placeholder{color:var(--mist)}
+.seg{display:flex;border:1px solid var(--line-2);border-radius:3px;overflow:hidden;background:var(--surface)}
+.seg button{
+  font:inherit;font-size:12px;background:transparent;border:0;border-right:1px solid var(--line);
+  padding:7px 11px;cursor:pointer;color:var(--graphite);white-space:nowrap;
+}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:var(--surface-3);color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:500}
+.tool-count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite);white-space:nowrap}
+
+.table-scroll{overflow-x:auto;flex:1}
+table{border-collapse:collapse;width:100%;min-width:940px}
+thead th{
+  position:sticky;top:0;z-index:2;background:var(--surface);
+  font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--mist);
+  text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;
+}
+thead th button{
+  font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px;letter-spacing:inherit;text-transform:inherit;
+}
+thead th button:hover{color:var(--ink)}
+thead th .arw{opacity:0}
+thead th.sorted button{color:var(--ink)}
+thead th.sorted .arw{opacity:1}
+tbody tr{border-bottom:1px solid var(--line);cursor:pointer}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr[aria-selected="true"]{background:var(--surface-3)}
+tbody td{padding:10px 12px;vertical-align:middle}
+td.rail-cell{padding:0;width:4px;position:relative}
+.sev{position:absolute;inset:0;width:4px;background:var(--line-2)}
+.sev.s3{background:var(--ink)}
+.sev.s2{background:var(--graphite)}
+.sev.s1{background:var(--line-2)}
+.co{font-weight:600;font-size:13.5px;letter-spacing:-.005em}
+.co-sub{font-size:11.5px;color:var(--graphite);margin-top:1px}
+.src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-2);white-space:nowrap;
+  border:1px solid var(--line);padding:2px 7px;border-radius:2px;display:inline-block}
+.score{display:flex;align-items:center;gap:8px}
+.score-track{width:38px;height:5px;background:var(--surface-3);flex:none}
+.score-fill{height:100%;background:var(--ink)}
+.score b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:12px;font-variant-numeric:tabular-nums}
+.val{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.next{font-size:12.5px;color:var(--ink-2);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ago{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--graphite);white-space:nowrap}
+.ago.stale{color:var(--ink);font-weight:500}
+.ago.stale::after{content:" ●";font-size:8px;vertical-align:2px}
+.rowacts{display:flex;gap:4px;opacity:0;transition:opacity .12s}
+tr:hover .rowacts,tr[aria-selected="true"] .rowacts{opacity:1}
+.iconbtn{
+  width:24px;height:24px;display:grid;place-items:center;font-size:12px;
+  border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
+  border-radius:3px;cursor:pointer;padding:0;line-height:1;font-family:"IBM Plex Mono",monospace;
+}
+.iconbtn:hover{border-color:var(--ink);color:var(--ink)}
+.empty{padding:56px 20px;text-align:center;color:var(--graphite)}
+.empty strong{display:block;font-family:Archivo;font-size:16px;color:var(--ink);margin-bottom:6px}
+
+/* fase pills — monochroom: vulling + contour dragen de status, tekst benoemt hem */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;
+  padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--graphite);
+}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;border:1px solid currentColor;flex:none}
+.pill.f-nieuw{border-style:dashed}
+.pill.f-gekwalificeerd{color:var(--ink-2);border-color:var(--ink-2)}
+.pill.f-gekwalificeerd::before{background:currentColor;opacity:.35}
+.pill.f-voorstel{background:var(--surface-3);border-color:var(--line-2);color:var(--ink)}
+.pill.f-voorstel::before{background:currentColor;opacity:.6}
+.pill.f-onderhandeling{background:var(--ink-2);border-color:var(--ink-2);color:var(--surface)}
+.pill.f-onderhandeling::before{background:currentColor}
+.pill.f-gewonnen{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
+.pill.f-gewonnen::before{background:currentColor}
+.pill.f-verloren{border-style:dotted;color:var(--mist)}
+.pill.f-verloren::before{border-style:dotted}
+
+/* detail */
+.detail{border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface-2)}
+.detail-head{padding:18px 18px 16px;border-bottom:1px solid var(--line)}
+.detail-co{font-family:Archivo;font-weight:700;font-size:19px;letter-spacing:-.02em;line-height:1.15}
+.detail-person{color:var(--graphite);font-size:12.5px;margin-top:3px}
+.detail-id{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.detail-body{padding:16px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:12.5px}
+.facts dt{color:var(--mist);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.facts dd{margin:0;color:var(--ink);word-break:break-word}
+.facts a{color:inherit}
+.actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.actions-grid .btn{justify-content:center}
+.stepper{display:flex;flex-direction:column;gap:6px}
+.step-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--graphite)}
+.step-row .idx{
+  width:18px;height:18px;border:1px solid var(--line-2);border-radius:50%;flex:none;
+  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:9px;
+}
+.step-row.done{color:var(--ink)}
+.step-row.done .idx{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
+.step-row.current{color:var(--ink);font-weight:600}
+.step-row.current .idx{border-color:var(--ink);border-width:2px}
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl{display:grid;grid-template-columns:14px 1fr;gap:10px;padding-bottom:12px;position:relative}
+.tl:not(:last-child)::before{content:"";position:absolute;left:6px;top:14px;bottom:0;width:1px;background:var(--line)}
+.tl i{width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);margin-top:5px;background:var(--surface-2);z-index:1}
+.tl:first-child i{background:var(--ink)}
+.tl-t{font-size:12.5px;color:var(--ink)}
+.tl-d{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--mist);margin-top:1px}
+.note{
+  font:inherit;font-size:12.5px;width:100%;resize:vertical;min-height:64px;
+  border:1px solid var(--line-2);border-radius:3px;background:var(--surface);color:var(--ink);padding:8px 10px;
+}
+.note:focus{outline:none;border-color:var(--ink)}
+.detail-empty{padding:48px 20px;text-align:center;color:var(--graphite);font-size:13px}
+
+.blk > .eyebrow{display:block;margin-bottom:9px}
+
+/* footer */
+.legend{
+  display:flex;gap:18px;flex-wrap:wrap;align-items:center;
+  padding-block:18px;border-top:1px solid var(--line);margin-top:26px;
+  font-size:12px;color:var(--graphite);
+}
+.legend .grp{display:flex;align-items:center;gap:7px}
+.disclaimer{margin-top:4px;font-size:11.5px;color:var(--mist);max-width:70ch}
+
+/* ============ responsive ============ */
+@media (max-width:1180px){
+  .slide{grid-template-columns:210px minmax(0,1fr)}
+  .detail{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .kpi:nth-child(3){border-right:0}
+  .kpi:nth-child(n+4){border-top:1px solid var(--line)}
+}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:32px;align-items:start;padding-block:36px 26px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{border-right:1px solid var(--line)}
+  .kpi:nth-child(2n){border-right:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--line)}
+  .slide{grid-template-columns:1fr}
+  .rail{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;gap:18px}
+  .rail-block{flex:1;min-width:190px}
+}
+@media (max-width:560px){
+  .wrap{padding-inline:16px}
+  .kpis{grid-template-columns:1fr}
+  .kpi{border-right:0;border-top:1px solid var(--line)}
+  .kpi:first-child{border-top:0}
+  .hero-meta div{border-right:0;padding-right:0;margin-right:16px}
+  .meter-legend{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+</style>
+
+<div class="wrap">
+
+  <!-- ============ topbar ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <div>
+        <div class="brand-name">Test Dashboard</div>
+      </div>
+      <div class="brand-sub">Marketing &amp; Sales · Q3 2026</div>
+    </div>
+    <div class="topbar-actions">
+      <span class="sync" id="syncBadge"><i class="dot"></i><span id="syncText">Lokale sessie</span></span>
+      <button class="btn btn-sm" id="themeBtn" type="button">Thema</button>
+      <button class="btn btn-sm" id="resetBtn" type="button">Reset data</button>
+    </div>
+  </header>
+
+  <!-- ============ hero ============ -->
+  <section class="hero">
+    <div>
+      <div class="hero-kicker">
+        <span class="eyebrow">Werkblad 01 — Leadoverzicht</span>
+        <span class="rule"></span>
+      </div>
+      <h1 class="hero-title">Test<br>Dashboard<br><span class="thin">Sales</span></h1>
+      <p class="hero-lede">
+        Eén werkblad voor het volledige marketingteam. Elke lead die binnenkomt via
+        campagnes, beurzen of doorverwijzing staat hier — gefilterd, gescoord en
+        toegewezen. Klik een rij aan en schakel meteen door naar de volgende stap.
+      </p>
+      <dl class="hero-meta">
+        <div><dt class="eyebrow">Bijgewerkt</dt><dd id="mUpdated">Vandaag 09:41</dd></div>
+        <div><dt class="eyebrow">Leads in beeld</dt><dd id="mLeads">28</dd></div>
+        <div><dt class="eyebrow">Team</dt><dd>4 accounts</dd></div>
+        <div><dt class="eyebrow">Periode</dt><dd>13 wk rollend</dd></div>
+      </dl>
+    </div>
+
+    <div class="meter">
+      <div class="meter-head">
+        <div>
+          <span class="eyebrow">Open pipeline</span>
+          <div class="meter-total num" id="pipeTotal">€ 0</div>
+        </div>
+        <span class="delta up mono" id="pipeDelta">12,4% vs. vorige maand</span>
+      </div>
+      <div class="meter-bar" id="meterBar"></div>
+      <div class="meter-legend" id="meterLegend"></div>
+    </div>
+  </section>
+
+  <!-- ============ quick actions ============ -->
+  <nav class="quickbar" aria-label="Snelacties">
+    <span class="eyebrow">Snel door</span>
+    <button class="btn btn-solid btn-sm" data-quick="nieuw" type="button">+ Nieuwe lead</button>
+    <button class="btn btn-sm" data-quick="vandaag" type="button">Vandaag opvolgen <span class="kbd">V</span></button>
+    <button class="btn btn-sm" data-quick="hot" type="button">Hot leads <span class="kbd">H</span></button>
+    <button class="btn btn-sm" data-quick="stil" type="button">Te lang stil <span class="kbd">S</span></button>
+    <button class="btn btn-sm" data-quick="mijn" type="button">Mijn leads <span class="kbd">M</span></button>
+    <span class="spacer"></span>
+    <button class="btn btn-sm" data-quick="import" type="button">Import CSV</button>
+    <button class="btn btn-sm" data-quick="export" type="button">Export selectie</button>
+  </nav>
+
+  <!-- ============ kpi's ============ -->
+  <section class="kpis" id="kpis" aria-label="Kerncijfers"></section>
+
+  <!-- ============ slide ============ -->
+  <div class="slide-head">
+    <h2>Leadwerkblad</h2>
+    <span class="sep">/</span>
+    <p>Filter links, werk in het midden, schakel door rechts. Alles wat je aanpast blijft staan voor de rest van het team.</p>
+  </div>
+
+  <section class="slide">
+
+    <!-- rail -->
+    <aside class="rail" aria-label="Filters en weergaven">
+      <div class="rail-block">
+        <span class="eyebrow">Weergaven</span>
+        <div class="views" id="views"></div>
+      </div>
+
+      <div class="rail-block">
+        <span class="eyebrow">Bron</span>
+        <div class="chips" id="bronChips"></div>
+      </div>
+
+      <div class="rail-block">
+        <span class="eyebrow">Eigenaar</span>
+        <div class="owners" id="owners"></div>
+      </div>
+
+      <div class="rail-block">
+        <span class="eyebrow">Trechter · aantal leads</span>
+        <div class="funnel" id="funnel"></div>
+      </div>
+    </aside>
+
+    <!-- center -->
+    <div class="center">
+      <div class="toolbar">
+        <label class="search" for="q">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="4.25" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9.2 9.2 12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input id="q" type="search" placeholder="Zoek op bedrijf, contact, stad of bron…" autocomplete="off">
+          <span class="kbd">/</span>
+        </label>
+        <div class="seg" id="faseSeg" role="group" aria-label="Filter op fase"></div>
+        <span class="tool-count num" id="rowCount">—</span>
+      </div>
+
+      <div class="table-scroll">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th scope="col" aria-label="Prioriteit"></th>
+              <th scope="col" data-sort="bedrijf"><button type="button">Bedrijf / contact <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="bron"><button type="button">Bron <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="score"><button type="button">Score <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="waarde"><button type="button">Waarde <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="fase"><button type="button">Fase <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="eigenaar"><button type="button">Eig. <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="dagen"><button type="button">Laatst <span class="arw">↓</span></button></th>
+              <th scope="col">Volgende stap</th>
+              <th scope="col" aria-label="Acties"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty" id="empty" hidden>
+          <strong>Geen leads in deze selectie</strong>
+          Pas je filters aan of wis het zoekveld.
+        </div>
+      </div>
+    </div>
+
+    <!-- detail -->
+    <aside class="detail" id="detail" aria-label="Leaddetail"></aside>
+  </section>
+
+  <footer class="legend">
+    <div class="grp"><span class="eyebrow">Sneltoetsen</span></div>
+    <div class="grp"><span class="kbd">/</span> zoeken</div>
+    <div class="grp"><span class="kbd">J</span><span class="kbd">K</span> rij op/neer</div>
+    <div class="grp"><span class="kbd">1</span>–<span class="kbd">6</span> fase zetten</div>
+    <div class="grp"><span class="kbd">→</span> fase vooruit</div>
+    <div class="grp"><span class="kbd">Esc</span> selectie los</div>
+  </footer>
+  <p class="disclaimer">Voorbeelddata — 28 fictieve leads om het werkblad te tonen. Vervang ze door je eigen export en de tellingen, trechter en grafieken rekenen automatisch mee.</p>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- data ---------------- */
+var FASES = [
+  {key:"nieuw",          label:"Nieuw"},
+  {key:"gekwalificeerd", label:"Gekwalificeerd"},
+  {key:"voorstel",       label:"Voorstel"},
+  {key:"onderhandeling", label:"Onderhandeling"},
+  {key:"gewonnen",       label:"Gewonnen"},
+  {key:"verloren",       label:"Verloren"}
+];
+var OPEN_FASES = ["nieuw","gekwalificeerd","voorstel","onderhandeling"];
+var TEAM = {
+  LV:{naam:"Lenny V.", rol:"Account lead"},
+  SD:{naam:"Sara D.",  rol:"Campagnes"},
+  MK:{naam:"Milan K.", rol:"Inbound"},
+  FR:{naam:"Fien R.",  rol:"New business"}
+};
+var MIJ = "LV";
+
+/* id, bedrijf, contact, functie, stad, bron, score, waarde, fase, eigenaar, dagen, volgende stap */
+var RAW = [
+["L-1051","Nova Logistics","Tom Peeters","COO","Antwerpen","Doorverwijzing",92,42000,"onderhandeling","LV",1,"Contract nalezen met jurist"],
+["L-1055","Helix Software","Yasmine Bouzid","Head of Growth","Brussel","Webinar",88,31000,"voorstel","FR",1,"Demo inplannen met team"],
+["L-1050","Skyline Vastgoed","Olivier Dupont","Manager marketing","Luik","Webinar",87,46000,"onderhandeling","FR",2,"Korting op jaarcontract bevestigen"],
+["L-1058","Nordic Kitchen","Emma Lindqvist","Country manager","Brussel","Doorverwijzing",85,37500,"onderhandeling","SD",1,"Startdatum campagne vastleggen"],
+["L-1042","Vandersteen Interieur","Karel Vandersteen","Zaakvoerder","Hasselt","Beurs",84,18500,"voorstel","LV",2,"Offerte v2 doorsturen"],
+["L-1041","Trivium Advocaten","Ellen Baert","Partner","Brussel","Doorverwijzing",83,24800,"voorstel","MK",5,"Referenties uit juridische sector bezorgen"],
+["L-1048","Delacroix Wine","Pierre Delacroix","Sales director","Namen","Doorverwijzing",81,22000,"voorstel","LV",2,"Nabellen over budgetgoedkeuring"],
+["L-1049","Cobalt Labs","Wouter Simoens","Founder","Gent","Webinar",79,19500,"voorstel","FR",3,"Technische scope afstemmen"],
+["L-1060","Terra Bouwgroep","Dries Wouters","Marketing manager","Brugge","Beurs",76,27500,"gekwalificeerd","MK",3,"Intake plannen week 38"],
+["L-1044","Van Hulle Transport","Jonas Van Hulle","Fleet manager","Zele","Doorverwijzing",74,16200,"onderhandeling","LV",4,"Laatste voorwaarden doornemen"],
+["L-1026","Frisco Foods","Nicolas Gillis","Supply lead","Antwerpen","Beurs",72,20500,"gewonnen","FR",16,"Onboarding afgerond — kwartaalreview"],
+["L-1039","Brasserie De Kade","Ineke Maes","Marketing lead","Gent","LinkedIn Ads",71,9400,"gekwalificeerd","SD",4,"Contentplan voorstellen"],
+["L-1061","Orbit Fitness","Nele Aerts","Franchise manager","Antwerpen","LinkedIn Ads",69,14800,"gekwalificeerd","SD",5,"Cijfers vestigingen opvragen"],
+["L-1053","Praktijk Solis","Hanne Coppens","Praktijkhouder","Leuven","Webinar",66,6400,"gekwalificeerd","SD",2,"Voorstel lokale campagne opmaken"],
+["L-1059","Atelier Noor","Noor El Amrani","Eigenaar","Brussel","LinkedIn Ads",64,8300,"gekwalificeerd","LV",2,"Beeldmateriaal opvragen"],
+["L-1057","Aquafleur Tuinen","Lotte Vermeulen","Zaakvoerder","Turnhout","Google Search",63,8900,"nieuw","FR",3,"Eerste kennismaking bellen"],
+["L-1036","Elektro Ghys","Pieter Ghys","Zaakvoerder","Aalst","Beurs",61,9800,"gekwalificeerd","FR",8,"Herinnering sturen na beurs"],
+["L-1033","Studio Lumen","Anneleen Ryckaert","Creative director","Gent","Nieuwsbrief",58,7600,"nieuw","FR",6,"Kwalificatievragen mailen"],
+["L-1064","Halo Optiek","Sam Nuyts","Zaakvoerder","Sint-Niklaas","Meta Ads",57,7200,"nieuw","LV",0,"Binnen 24u opvolgen"],
+["L-1065","Verde Landschappen","Hannah Mertens","Zaakvoerder","Genk","Nieuwsbrief",55,9100,"nieuw","MK",0,"Toewijzen aan accountmanager"],
+["L-1063","Sereno Wellness","Marte Janssens","Marketing","Knokke","Meta Ads",52,11200,"nieuw","MK",1,"Formulierantwoorden nakijken"],
+["L-1046","Puur Energie","Stijn Vandenbroucke","Sales manager","Brugge","Koud contact",48,13400,"nieuw","SD",7,"Tweede belpoging"],
+["L-1028","Fietsen Claes","Sofie Claes","Eigenaar","Leuven","Google Search",46,5200,"nieuw","MK",9,"Nog geen reactie — laatste mail"],
+["L-1030","Groep Vanhecke","Filip Vanhecke","Directeur","Roeselare","Nieuwsbrief",44,6100,"nieuw","MK",11,"Beslissen: opvolgen of afsluiten"],
+["L-1023","Bricks & Co","Ruben Decoster","CMO","Antwerpen","LinkedIn Ads",90,58000,"gewonnen","LV",12,"Jaarplan 2027 voorbereiden"],
+["L-1021","De Zonnebloem vzw","Katrien Segers","Communicatie","Hasselt","Google Search",39,3200,"verloren","SD",26,"Budget geschrapt — heropenen in Q1"],
+["L-1017","Bakkerij Verlinden","Geert Verlinden","Zaakvoerder","Mechelen","Meta Ads",33,3800,"verloren","SD",21,"Koos lokaal bureau"],
+["L-1012","Meubelhuis Steyaert","Bart Steyaert","Zaakvoerder","Kortrijk","Koud contact",28,4100,"verloren","MK",30,"Geen interesse — niet opnieuw benaderen"]
+];
+
+function slug(s){
+  return s.toLowerCase()
+    .replace(/[àáâä]/g,"a").replace(/[éèêë]/g,"e").replace(/[ïî]/g,"i").replace(/[öô]/g,"o").replace(/[üû]/g,"u")
+    .replace(/&/g,"en").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+var LEADS = RAW.map(function(r,i){
+  var voor = r[2].split(" ")[0].toLowerCase();
+  var achter = r[2].split(" ").slice(-1)[0].toLowerCase();
+  return {
+    id:r[0], bedrijf:r[1], contact:r[2], functie:r[3], stad:r[4], bron:r[5],
+    score:r[6], waarde:r[7], fase:r[8], eigenaar:r[9], dagen:r[10], stap:r[11],
+    email:voor.charAt(0)+"."+achter.replace(/[^a-z]/g,"")+"@"+slug(r[1])+".be",
+    tel:"+32 4"+(70+(i%9))+" "+(10+(i*7)%89)+" "+(10+(i*13)%89)+" "+(10+(i*19)%89)
+  };
+});
+
+var BRONNEN = LEADS.map(function(l){return l.bron;}).filter(function(v,i,a){return a.indexOf(v)===i;}).sort();
+
+var VIEWS = [
+  {key:"alle",     label:"Alle leads",        test:function(){return true;}},
+  {key:"mijn",     label:"Mijn leads",        test:function(l){return l.eigenaar===MIJ;}},
+  {key:"vandaag",  label:"Vandaag opvolgen",  test:function(l){return l.dagen<=2 && OPEN_FASES.indexOf(l.fase)>-1;}},
+  {key:"hot",      label:"Hot · score ≥ 75",  test:function(l){return l.score>=75 && OPEN_FASES.indexOf(l.fase)>-1;}},
+  {key:"stil",     label:"Te lang stil ≥ 7d", test:function(l){return l.dagen>=7 && OPEN_FASES.indexOf(l.fase)>-1;}},
+  {key:"nieuw",    label:"Nog toe te wijzen", test:function(l){return l.fase==="nieuw";}},
+  {key:"gewonnen", label:"Gewonnen",          test:function(l){return l.fase==="gewonnen";}}
+];
+
+/* KPI-reeksen: 13 rollende weken voorbeelddata */
+var SERIES = {
+  pipeline:[188,196,191,205,214,209,223,231,228,242,251,247,268],
+  nieuwe:  [9,12,10,14,11,15,13,18,16,14,19,17,21],
+  ratio:   [31,29,34,33,36,35,38,37,41,40,39,43,44],
+  reactie: [7.4,6.9,7.1,6.2,5.8,6.0,5.1,4.8,4.9,4.4,4.2,4.3,3.9],
+  stil:    [11,10,12,9,10,8,9,7,8,6,7,6,5]
+};
+
+/* ---------------- state ---------------- */
+var state = {
+  view:"alle",
+  q:"",
+  fase:null,
+  bron:null,
+  eigenaar:null,
+  sort:{key:"score",dir:"desc"},
+  selected:LEADS[0].id
+};
+var overrides = Object.create(null);   /* id -> {fase, eigenaar, notitie, stap} */
+var db = null;
+
+function lead(id){ for(var i=0;i<LEADS.length;i++){ if(LEADS[i].id===id) return LEADS[i]; } return null; }
+function merged(l){
+  var o = overrides[l.id];
+  if(!o) return l;
+  var m = {};
+  for(var k in l) m[k]=l[k];
+  if(o.fase) m.fase=o.fase;
+  if(o.eigenaar) m.eigenaar=o.eigenaar;
+  if(o.stap) m.stap=o.stap;
+  if(typeof o.dagen==="number") m.dagen=o.dagen;
+  m.notitie = o.notitie||"";
+  m.gewijzigd = o.gewijzigd||"";
+  return m;
+}
+function all(){ return LEADS.map(merged); }
+
+/* ---------------- format ---------------- */
+var nf = new Intl.NumberFormat("nl-BE");
+function euro(n){
+  if(n>=1000000) return "€ "+(n/1000000).toFixed(1).replace(".",",")+" mln";
+  if(n>=10000) return "€ "+nf.format(Math.round(n/1000))+"k";
+  return "€ "+nf.format(n);
+}
+function euroFull(n){ return "€ "+nf.format(n); }
+function ago(d){ return d===0?"vandaag":d===1?"1 d":d+" d"; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function faseLabel(k){ for(var i=0;i<FASES.length;i++){ if(FASES[i].key===k) return FASES[i].label; } return k; }
+function faseIndex(k){ for(var i=0;i<FASES.length;i++){ if(FASES[i].key===k) return i; } return 0; }
+
+/* ---------------- sparkline ---------------- */
+function spark(vals,w,h){
+  w=w||96; h=h||26;
+  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  var span=(max-min)||1, pad=3;
+  var pts=vals.map(function(v,i){
+    var x=(i/(vals.length-1))*(w-2)+1;
+    var y=h-pad-((v-min)/span)*(h-pad*2);
+    return [x,y];
+  });
+  var line=pts.map(function(p,i){return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1);}).join(" ");
+  var area=line+" L"+pts[pts.length-1][0].toFixed(1)+" "+h+" L"+pts[0][0].toFixed(1)+" "+h+" Z";
+  var last=pts[pts.length-1];
+  return '<svg class="spark" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Verloop laatste 13 weken">'+
+    '<path d="'+area+'" fill="currentColor" fill-opacity=".10"/>'+
+    '<path d="'+line+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'+
+    '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.6" fill="currentColor"/>'+
+  '</svg>';
+}
+
+/* ---------------- afgeleide cijfers ---------------- */
+function stats(){
+  var L=all(), s={openWaarde:0,perFase:{},nieuweWeek:0,gewonnen:0,verloren:0,stil:0,gewonnenWaarde:0};
+  FASES.forEach(function(f){ s.perFase[f.key]={n:0,waarde:0}; });
+  L.forEach(function(l){
+    s.perFase[l.fase].n++; s.perFase[l.fase].waarde+=l.waarde;
+    if(OPEN_FASES.indexOf(l.fase)>-1){
+      s.openWaarde+=l.waarde;
+      if(l.dagen>=7) s.stil++;
+    }
+    if(l.fase==="nieuw" && l.dagen<=7) s.nieuweWeek++;
+    if(l.fase==="gewonnen"){ s.gewonnen++; s.gewonnenWaarde+=l.waarde; }
+    if(l.fase==="verloren") s.verloren++;
+  });
+  s.ratio = s.gewonnen+s.verloren ? Math.round(s.gewonnen/(s.gewonnen+s.verloren)*100) : 0;
+  return s;
+}
+
+/* ---------------- render: hero meter ---------------- */
+function renderMeter(){
+  var s=stats();
+  document.getElementById("pipeTotal").textContent=euroFull(s.openWaarde);
+  document.getElementById("mLeads").textContent=LEADS.length;
+
+  var tones=["var(--surface-3)","var(--line-2)","var(--ink-2)","var(--ink)"];
+  var inks =["var(--ink)","var(--ink)","var(--surface)","var(--surface)"];
+  var bar=document.getElementById("meterBar"), leg=document.getElementById("meterLegend");
+  bar.innerHTML=""; leg.innerHTML="";
+  OPEN_FASES.forEach(function(k,i){
+    var d=s.perFase[k], pct=s.openWaarde?d.waarde/s.openWaarde*100:0;
+    var seg=document.createElement("div");
+    seg.className="meter-seg";
+    seg.style.flex=pct+" 0 0";
+    seg.style.background=tones[i];
+    seg.style.color=inks[i];
+    seg.title=faseLabel(k)+" · "+euroFull(d.waarde)+" · "+d.n+" leads";
+    if(pct>11) seg.innerHTML='<span>'+Math.round(pct)+'%</span>';
+    bar.appendChild(seg);
+
+    var row=document.createElement("div");
+    row.className="leg";
+    row.innerHTML='<i style="background:'+tones[i]+'"></i>'+esc(faseLabel(k))+' <b class="num">'+euro(d.waarde)+'</b>';
+    leg.appendChild(row);
+  });
+}
+
+/* ---------------- render: kpi's ---------------- */
+function renderKpis(){
+  var s=stats();
+  var cards=[
+    {label:"Open pipeline",     val:euro(s.openWaarde),      delta:"+12,4% MoM", dir:"up",   series:SERIES.pipeline},
+    {label:"Nieuw deze week",   val:String(s.nieuweWeek),    delta:"+4 vs. vorige week", dir:"up", series:SERIES.nieuwe},
+    {label:"Winratio",          val:s.ratio+"%",             delta:"+5 pp kwartaal", dir:"up", series:SERIES.ratio},
+    {label:"Gem. reactietijd",  val:"3,9 u",                 delta:"−0,4 u", dir:"down", series:SERIES.reactie},
+    {label:"Te lang stil",      val:String(s.stil),          delta:"−1 vs. vorige week", dir:"down", series:SERIES.stil}
+  ];
+  document.getElementById("kpis").innerHTML=cards.map(function(c){
+    return '<article class="kpi">'+
+      '<span class="eyebrow">'+esc(c.label)+'</span>'+
+      '<div class="kpi-val num">'+esc(c.val)+'</div>'+
+      '<div class="kpi-foot"><span class="delta '+c.dir+'">'+esc(c.delta)+'</span>'+spark(c.series,96,26)+'</div>'+
+    '</article>';
+  }).join("");
+}
+
+/* ---------------- render: rail ---------------- */
+function renderRail(){
+  var L=all();
+
+  document.getElementById("views").innerHTML=VIEWS.map(function(v){
+    var n=L.filter(v.test).length;
+    return '<button class="view-btn" type="button" data-view="'+v.key+'" aria-pressed="'+(state.view===v.key)+'">'+
+      '<span class="tick"></span>'+esc(v.label)+'<span class="cnt num">'+n+'</span></button>';
+  }).join("");
+
+  document.getElementById("bronChips").innerHTML=BRONNEN.map(function(b){
+    return '<button class="chip" type="button" data-bron="'+esc(b)+'" aria-pressed="'+(state.bron===b)+'">'+esc(b)+'</button>';
+  }).join("");
+
+  document.getElementById("owners").innerHTML=Object.keys(TEAM).map(function(k){
+    var n=L.filter(function(l){return l.eigenaar===k;}).length;
+    var on=state.eigenaar===k;
+    return '<button class="owner-btn" type="button" data-owner="'+k+'" aria-pressed="'+on+'">'+
+      '<span class="avatar'+(on?" filled":"")+'">'+k+'</span>'+esc(TEAM[k].naam)+
+      '<span class="cnt num">'+n+'</span></button>';
+  }).join("");
+
+  var s=stats();
+  var maxN=Math.max.apply(null,FASES.map(function(f){return s.perFase[f.key].n;}))||1;
+  var tone=["var(--line-2)","var(--graphite)","var(--ink-2)","var(--ink)","var(--ink)","var(--line-2)"];
+  document.getElementById("funnel").innerHTML=FASES.map(function(f,i){
+    var d=s.perFase[f.key];
+    return '<div class="fn-row">'+
+      '<span class="fn-label">'+esc(f.label)+'</span>'+
+      '<span class="fn-count num">'+d.n+' · '+euro(d.waarde)+'</span>'+
+      '<span class="fn-track"><span class="fn-fill" style="width:'+(d.n/maxN*100).toFixed(1)+'%;background:'+tone[i]+'"></span></span>'+
+    '</div>';
+  }).join("");
+}
+
+/* ---------------- render: fase-filter ---------------- */
+function renderSeg(){
+  var s=stats();
+  var html='<button type="button" data-fase="" aria-pressed="'+(state.fase===null)+'">Alle</button>';
+  html+=FASES.map(function(f){
+    return '<button type="button" data-fase="'+f.key+'" aria-pressed="'+(state.fase===f.key)+'">'+esc(f.label)+' <span class="num">'+s.perFase[f.key].n+'</span></button>';
+  }).join("");
+  document.getElementById("faseSeg").innerHTML=html;
+}
+
+/* ---------------- filter + sort ---------------- */
+function visible(){
+  var v=VIEWS.filter(function(x){return x.key===state.view;})[0]||VIEWS[0];
+  var q=state.q.trim().toLowerCase();
+  var rows=all().filter(function(l){
+    if(!v.test(l)) return false;
+    if(state.fase && l.fase!==state.fase) return false;
+    if(state.bron && l.bron!==state.bron) return false;
+    if(state.eigenaar && l.eigenaar!==state.eigenaar) return false;
+    if(q){
+      var hay=(l.bedrijf+" "+l.contact+" "+l.stad+" "+l.bron+" "+l.id+" "+l.stap+" "+l.functie).toLowerCase();
+      if(hay.indexOf(q)===-1) return false;
+    }
+    return true;
+  });
+  var k=state.sort.key, dir=state.sort.dir==="asc"?1:-1;
+  rows.sort(function(a,b){
+    var x=a[k], y=b[k];
+    if(k==="fase"){ x=faseIndex(a.fase); y=faseIndex(b.fase); }
+    if(typeof x==="string") return x.localeCompare(y,"nl")*dir;
+    return (x-y)*dir;
+  });
+  return rows;
+}
+
+/* ---------------- render: tabel ---------------- */
+function sev(l){
+  if(OPEN_FASES.indexOf(l.fase)===-1) return "";
+  if(l.score>=75 || l.dagen>=7) return "s3";
+  if(l.score>=55) return "s2";
+  return "s1";
+}
+function renderTable(){
+  var rows=visible();
+  var tb=document.getElementById("tbody");
+  document.getElementById("rowCount").textContent=rows.length+" van "+LEADS.length+" leads";
+  document.getElementById("empty").hidden=rows.length>0;
+
+  tb.innerHTML=rows.map(function(l){
+    var sel=l.id===state.selected;
+    return '<tr data-id="'+l.id+'" aria-selected="'+sel+'" tabindex="-1">'+
+      '<td class="rail-cell"><span class="sev '+sev(l)+'"></span></td>'+
+      '<td><div class="co">'+esc(l.bedrijf)+'</div><div class="co-sub">'+esc(l.contact)+' · '+esc(l.stad)+'</div></td>'+
+      '<td><span class="src">'+esc(l.bron)+'</span></td>'+
+      '<td><span class="score"><span class="score-track"><span class="score-fill" style="width:'+l.score+'%"></span></span><b>'+l.score+'</b></span></td>'+
+      '<td class="val">'+euroFull(l.waarde)+'</td>'+
+      '<td><span class="pill f-'+l.fase+'">'+esc(faseLabel(l.fase))+'</span></td>'+
+      '<td><span class="avatar" title="'+esc(TEAM[l.eigenaar].naam)+'">'+l.eigenaar+'</span></td>'+
+      '<td><span class="ago'+(l.dagen>=7&&OPEN_FASES.indexOf(l.fase)>-1?" stale":"")+'">'+ago(l.dagen)+'</span></td>'+
+      '<td><div class="next" title="'+esc(l.stap)+'">'+esc(l.stap)+'</div></td>'+
+      '<td><div class="rowacts">'+
+        '<button class="iconbtn" type="button" data-act="next" data-id="'+l.id+'" title="Fase vooruit" aria-label="Fase vooruit">→</button>'+
+        '<button class="iconbtn" type="button" data-act="won" data-id="'+l.id+'" title="Markeer gewonnen" aria-label="Markeer gewonnen">✓</button>'+
+        '<button class="iconbtn" type="button" data-act="lost" data-id="'+l.id+'" title="Markeer verloren" aria-label="Markeer verloren">✕</button>'+
+      '</div></td>'+
+    '</tr>';
+  }).join("");
+
+  document.querySelectorAll("thead th[data-sort]").forEach(function(th){
+    var on=th.getAttribute("data-sort")===state.sort.key;
+    th.classList.toggle("sorted",on);
+    var a=th.querySelector(".arw");
+    if(a) a.textContent=state.sort.dir==="asc"?"↑":"↓";
+  });
+}
+
+/* ---------------- render: detail ---------------- */
+function renderDetail(){
+  var el=document.getElementById("detail");
+  var l=state.selected?merged(lead(state.selected)||LEADS[0]):null;
+  if(!l){
+    el.innerHTML='<div class="detail-empty">Selecteer een lead in de lijst om door te schakelen.</div>';
+    return;
+  }
+  var idx=faseIndex(l.fase);
+  var steps=FASES.slice(0,5).map(function(f,i){
+    var cls=i<idx?"done":(i===idx?"current":"");
+    if(l.fase==="verloren") cls=i<=1?"done":"";
+    return '<div class="step-row '+cls+'"><span class="idx">'+(i+1)+'</span>'+esc(f.label)+'</div>';
+  }).join("");
+
+  var tl=[
+    {t:l.stap,d:"Volgende stap · door "+TEAM[l.eigenaar].naam},
+    {t:"Fase gezet op "+faseLabel(l.fase),d:l.gewijzigd?("bijgewerkt "+l.gewijzigd):("laatste contact "+ago(l.dagen)+" geleden")},
+    {t:"Binnengekomen via "+l.bron,d:"lead "+l.id+" · score "+l.score+"/100"}
+  ].map(function(x,i){
+    return '<div class="tl"><i></i><div><div class="tl-t">'+esc(x.t)+'</div><div class="tl-d">'+esc(x.d)+'</div></div></div>';
+  }).join("");
+
+  el.innerHTML=
+    '<div class="detail-head">'+
+      '<div class="detail-co">'+esc(l.bedrijf)+'</div>'+
+      '<div class="detail-person">'+esc(l.contact)+' · '+esc(l.functie)+'</div>'+
+      '<div class="detail-id"><span class="pill f-'+l.fase+'">'+esc(faseLabel(l.fase))+'</span>'+
+        '<span class="mono" style="font-size:11px;color:var(--mist)">'+l.id+'</span>'+
+        '<span class="val" style="margin-left:auto;font-weight:500">'+euroFull(l.waarde)+'</span></div>'+
+    '</div>'+
+    '<div class="detail-body">'+
+
+      '<div class="blk"><span class="eyebrow">Doorschakelen</span>'+
+        '<div class="actions-grid">'+
+          '<button class="btn btn-sm" type="button" data-act="call" data-id="'+l.id+'">Bel</button>'+
+          '<button class="btn btn-sm" type="button" data-act="mail" data-id="'+l.id+'">Mail</button>'+
+          '<button class="btn btn-sm" type="button" data-act="meet" data-id="'+l.id+'">Meeting</button>'+
+          '<button class="btn btn-sm" type="button" data-act="touch" data-id="'+l.id+'">Contact gelogd</button>'+
+          '<button class="btn btn-sm btn-solid" type="button" data-act="next" data-id="'+l.id+'" style="grid-column:1/-1">Fase vooruit →</button>'+
+          '<button class="btn btn-sm" type="button" data-act="won" data-id="'+l.id+'">Gewonnen</button>'+
+          '<button class="btn btn-sm" type="button" data-act="lost" data-id="'+l.id+'">Verloren</button>'+
+        '</div>'+
+      '</div>'+
+
+      '<div class="blk"><span class="eyebrow">Traject</span><div class="stepper">'+steps+'</div></div>'+
+
+      '<div class="blk"><span class="eyebrow">Gegevens</span>'+
+        '<dl class="facts">'+
+          '<dt>Mail</dt><dd><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></dd>'+
+          '<dt>Tel</dt><dd class="mono">'+esc(l.tel)+'</dd>'+
+          '<dt>Stad</dt><dd>'+esc(l.stad)+'</dd>'+
+          '<dt>Bron</dt><dd>'+esc(l.bron)+'</dd>'+
+          '<dt>Score</dt><dd class="num">'+l.score+' / 100</dd>'+
+          '<dt>Eigenaar</dt><dd>'+esc(TEAM[l.eigenaar].naam)+' · '+esc(TEAM[l.eigenaar].rol)+'</dd>'+
+        '</dl>'+
+        '<div class="chips" style="margin-top:10px">'+Object.keys(TEAM).map(function(k){
+          return '<button class="chip" type="button" data-assign="'+k+'" data-id="'+l.id+'" aria-pressed="'+(l.eigenaar===k)+'">'+k+'</button>';
+        }).join("")+'</div>'+
+      '</div>'+
+
+      '<div class="blk"><span class="eyebrow">Notitie voor het team</span>'+
+        '<textarea class="note" id="noteBox" placeholder="Wat moet je collega weten voor het volgende contact?">'+esc(l.notitie||"")+'</textarea>'+
+      '</div>'+
+
+      '<div class="blk"><span class="eyebrow">Historiek</span><div class="timeline">'+tl+'</div></div>'+
+    '</div>';
+}
+
+/* ---------------- persistentie ---------------- */
+function save(id){
+  var o=overrides[id];
+  if(!db||!o) return;
+  var clean={};
+  for(var k in o){ if(k.charAt(0)!=="_") clean[k]=o[k]; }
+  db.doc("leads/"+id).set(clean).catch(function(){});
+}
+function patch(id,data){
+  var o=overrides[id]||(overrides[id]={});
+  for(var k in data) o[k]=data[k];
+  o.gewijzigd=new Date().toLocaleDateString("nl-BE",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
+  save(id);
+  renderAll();
+}
+
+/* ---------------- acties ---------------- */
+function act(kind,id){
+  var l=merged(lead(id)); if(!l) return;
+  if(kind==="next"){
+    var i=faseIndex(l.fase);
+    if(i<4) patch(id,{fase:FASES[i+1].key,dagen:0});
+  } else if(kind==="won"){
+    patch(id,{fase:"gewonnen",dagen:0});
+  } else if(kind==="lost"){
+    patch(id,{fase:"verloren",dagen:0});
+  } else if(kind==="touch"){
+    patch(id,{dagen:0});
+  } else if(kind==="call"){
+    window.location.href="tel:"+l.tel.replace(/\s/g,"");
+  } else if(kind==="mail"){
+    window.location.href="mailto:"+l.email+"?subject="+encodeURIComponent("Opvolging "+l.bedrijf+" ("+l.id+")");
+  } else if(kind==="meet"){
+    patch(id,{stap:"Meeting ingepland — bevestiging sturen",dagen:0});
+  }
+}
+
+/* ---------------- render alles ---------------- */
+var raf=null;
+function renderAll(){
+  if(raf) return;
+  raf=requestAnimationFrame(function(){
+    raf=null;
+    renderMeter(); renderKpis(); renderRail(); renderSeg(); renderTable(); renderDetail();
+  });
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("button");
+  if(!t) {
+    var row=e.target.closest("tr[data-id]");
+    if(row){ state.selected=row.getAttribute("data-id"); renderAll(); }
+    return;
+  }
+
+  if(t.hasAttribute("data-view")){ state.view=t.getAttribute("data-view"); renderAll(); return; }
+  if(t.hasAttribute("data-bron")){ var b=t.getAttribute("data-bron"); state.bron=state.bron===b?null:b; renderAll(); return; }
+  if(t.hasAttribute("data-owner")){ var o=t.getAttribute("data-owner"); state.eigenaar=state.eigenaar===o?null:o; renderAll(); return; }
+  if(t.hasAttribute("data-fase")){ var f=t.getAttribute("data-fase"); state.fase=f||null; renderAll(); return; }
+  if(t.hasAttribute("data-assign")){ patch(t.getAttribute("data-id"),{eigenaar:t.getAttribute("data-assign")}); return; }
+  if(t.hasAttribute("data-act")){ act(t.getAttribute("data-act"),t.getAttribute("data-id")); return; }
+
+  if(t.hasAttribute("data-quick")){
+    var q=t.getAttribute("data-quick");
+    if(q==="import"||q==="export"||q==="nieuw"){
+      var msg={import:"Import: koppel je CSV-export uit de campagnetool.",
+               export:"Export: de huidige selectie ("+visible().length+" leads) gaat naar CSV.",
+               nieuw:"Nieuwe lead: vul bedrijf, contact en bron in."}[q];
+      t.textContent=msg.split(":")[0]+" ✓";
+      setTimeout(function(){ t.textContent=q==="nieuw"?"+ Nieuwe lead":q==="import"?"Import CSV":"Export selectie"; },1400);
+      return;
+    }
+    state.view=q; state.fase=null; state.bron=null; state.eigenaar=null;
+    if(q==="mijn") state.eigenaar=MIJ;
+    renderAll();
+    document.querySelector(".slide").scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
+
+  var th=t.closest("th[data-sort]");
+  if(th){
+    var k=th.getAttribute("data-sort");
+    if(state.sort.key===k) state.sort.dir=state.sort.dir==="asc"?"desc":"asc";
+    else state.sort={key:k,dir:(k==="bedrijf"||k==="bron"||k==="eigenaar")?"asc":"desc"};
+    renderAll();
+    return;
+  }
+
+  if(t.id==="themeBtn"){
+    var cur=document.documentElement.getAttribute("data-theme");
+    var dark=cur? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme",dark?"light":"dark");
+    return;
+  }
+  if(t.id==="resetBtn"){
+    Object.keys(overrides).forEach(function(id){
+      delete overrides[id];
+      if(db) db.doc("leads/"+id).delete().catch(function(){});
+    });
+    renderAll();
+    return;
+  }
+});
+
+document.getElementById("q").addEventListener("input",function(e){
+  state.q=e.target.value; renderAll();
+});
+
+document.addEventListener("input",function(e){
+  if(e.target.id==="noteBox"){
+    var id=state.selected;
+    var o=overrides[id]||(overrides[id]={});
+    o.notitie=e.target.value;
+    clearTimeout(o._t);
+    o._t=setTimeout(function(){ var c={}; for(var k in o){ if(k!=="_t") c[k]=o[k]; } overrides[id]=c; save(id); },600);
+  }
+});
+
+document.addEventListener("keydown",function(e){
+  var tag=(e.target.tagName||"").toLowerCase();
+  var typing = tag==="input"||tag==="textarea";
+  if(e.key==="/" && !typing){ e.preventDefault(); document.getElementById("q").focus(); return; }
+  if(e.key==="Escape"){ if(typing){ e.target.blur(); } else { state.selected=null; renderAll(); } return; }
+  if(typing) return;
+
+  var rows=visible();
+  var i=rows.map(function(r){return r.id;}).indexOf(state.selected);
+  if(e.key==="j"||e.key==="ArrowDown"){ e.preventDefault(); state.selected=rows[Math.min(rows.length-1,i+1)]?rows[Math.min(rows.length-1,i+1)].id:(rows[0]&&rows[0].id); renderAll(); return; }
+  if(e.key==="k"||e.key==="ArrowUp"){ e.preventDefault(); state.selected=rows[Math.max(0,i-1)]?rows[Math.max(0,i-1)].id:(rows[0]&&rows[0].id); renderAll(); return; }
+  if(e.key==="ArrowRight" && state.selected){ e.preventDefault(); act("next",state.selected); return; }
+  if(state.selected && "123456".indexOf(e.key)>-1){ patch(state.selected,{fase:FASES[parseInt(e.key,10)-1].key,dagen:0}); return; }
+  var quick={v:"vandaag",h:"hot",s:"stil",m:"mijn",a:"alle"}[e.key.toLowerCase()];
+  if(quick){ state.view=quick; state.eigenaar=quick==="mijn"?MIJ:null; renderAll(); }
+});
+
+/* ---------------- gedeelde opslag (optioneel) ---------------- */
+renderAll();
+
+if(window.claude && typeof window.claude.use==="function"){
+  window.claude.use("db").then(function(store){
+    if(!store) return;
+    db=store;
+    document.getElementById("syncBadge").classList.add("live");
+    document.getElementById("syncText").textContent="Live gesynct";
+    db.collection("leads").onSnapshot(function(snap){
+      var next=Object.create(null);
+      snap.docs.forEach(function(d){ next[d.id]=d.data()||{}; });
+      overrides=next;
+      renderAll();
+    },function(){
+      document.getElementById("syncBadge").classList.remove("live");
+      document.getElementById("syncText").textContent="Offline — lokaal";
+    });
+  }).catch(function(){});
+}
+})();
+</script>
+</body>
+</html>
