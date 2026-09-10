@@ -17,433 +17,194 @@
 <style>
 /* ============ tokens ============ */
 :root{
-  --paper:#F2F1ED;
-  --surface:#FFFFFF;
-  --surface-2:#FAF9F6;
-  --surface-3:#EBE9E3;
-  --ink:#0B0B0C;
-  --ink-2:#3B3A3B;
-  --graphite:#6E6D68;
-  --mist:#9C9A94;
-  --line:#DFDDD6;
-  --line-2:#C7C4BB;
-  --inv-ground:#0B0B0C;
-  --inv-ink:#F5F4F0;
-  --shadow:0 1px 0 rgba(11,11,12,.05);
+  --paper:#F2F1ED; --surface:#FFFFFF; --surface-2:#FAF9F6; --surface-3:#EAE8E2;
+  --ink:#0B0B0C; --ink-2:#3B3A3B; --graphite:#6E6D68; --mist:#9C9A94;
+  --line:#DFDDD6; --line-2:#C5C2B9;
+  --inv-ground:#0B0B0C; --inv-ink:#F5F4F0;
   --focus:#0B0B0C;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0A0A0B;
-    --surface:#121213;
-    --surface-2:#171718;
-    --surface-3:#202021;
-    --ink:#F4F3EF;
-    --ink-2:#CFCDC7;
-    --graphite:#918F89;
-    --mist:#6D6B66;
-    --line:#282829;
-    --line-2:#3C3C3E;
-    --inv-ground:#F4F3EF;
-    --inv-ink:#0B0B0C;
-    --shadow:0 1px 0 rgba(0,0,0,.4);
+    --paper:#0A0A0B; --surface:#121213; --surface-2:#171718; --surface-3:#222223;
+    --ink:#F4F3EF; --ink-2:#CFCDC7; --graphite:#918F89; --mist:#6D6B66;
+    --line:#282829; --line-2:#3E3E40;
+    --inv-ground:#F4F3EF; --inv-ink:#0B0B0C;
     --focus:#F4F3EF;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0A0A0B;
-  --surface:#121213;
-  --surface-2:#171718;
-  --surface-3:#202021;
-  --ink:#F4F3EF;
-  --ink-2:#CFCDC7;
-  --graphite:#918F89;
-  --mist:#6D6B66;
-  --line:#282829;
-  --line-2:#3C3C3E;
-  --inv-ground:#F4F3EF;
-  --inv-ink:#0B0B0C;
-  --shadow:0 1px 0 rgba(0,0,0,.4);
+  --paper:#0A0A0B; --surface:#121213; --surface-2:#171718; --surface-3:#222223;
+  --ink:#F4F3EF; --ink-2:#CFCDC7; --graphite:#918F89; --mist:#6D6B66;
+  --line:#282829; --line-2:#3E3E40;
+  --inv-ground:#F4F3EF; --inv-ink:#0B0B0C;
   --focus:#F4F3EF;
 }
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
+  margin:0;background:var(--paper);color:var(--ink);
   font-family:"Public Sans","Helvetica Neue",Arial,sans-serif;
-  font-size:14px;
-  line-height:1.5;
-  -webkit-font-smoothing:antialiased;
+  font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1560px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
-
-/* ============ type helpers ============ */
-.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
-.eyebrow{
-  font-family:"IBM Plex Mono",ui-monospace,monospace;
-  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--mist);
-}
+.wrap{max-width:1500px;margin:0 auto;padding-inline:20px;padding-block:0 40px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
 .num{font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--mist);
+}
 h1,h2,h3{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;margin:0;text-wrap:balance}
 
-/* ============ topbar ============ */
-.topbar{
-  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
-  border-bottom:1px solid var(--line);
-  padding-block:14px;
-}
-.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
-.brand-mark{
-  width:26px;height:26px;border:1.5px solid var(--ink);border-radius:2px;
-  display:grid;place-items:center;font-family:Archivo;font-weight:800;font-size:13px;
-}
-.brand-name{font-family:Archivo;font-weight:700;letter-spacing:-.01em;font-size:15px}
-.brand-sub{color:var(--mist);font-size:12px;border-left:1px solid var(--line);padding-left:10px;margin-left:2px}
-.topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sync{
-  display:inline-flex;align-items:center;gap:7px;
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--graphite);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 8px;
-}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--mist);flex:none}
-.sync.live .dot{background:var(--ink)}
-.sync.live .dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--ink) 14%,transparent)}
-
-/* ============ buttons ============ */
+/* ============ knoppen ============ */
 .btn{
-  font:inherit;font-weight:500;font-size:13px;
+  font:inherit;font-weight:500;font-size:13.5px;
   background:var(--surface);color:var(--ink);
-  border:1px solid var(--line-2);border-radius:3px;
-  padding:7px 12px;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;
-  transition:background .12s ease,border-color .12s ease,color .12s ease;
+  border:1px solid var(--line-2);border-radius:4px;
+  padding:8px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+  transition:background .12s,border-color .12s,color .12s;
 }
 .btn:hover{border-color:var(--ink);background:var(--surface-2)}
-.btn:active{transform:translateY(.5px)}
 .btn-solid{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
 .btn-solid:hover{background:var(--ink-2);border-color:var(--ink-2);color:var(--inv-ink)}
-.btn-ghost{border-color:transparent;background:transparent;color:var(--graphite)}
-.btn-ghost:hover{border-color:var(--line);color:var(--ink);background:var(--surface)}
-.btn-sm{padding:5px 9px;font-size:12px}
+.btn-sm{padding:6px 10px;font-size:12.5px}
+.btn-lg{padding:11px 16px;font-size:14.5px}
+.btn:disabled{opacity:.45;cursor:default}
 .kbd{
-  font-family:"IBM Plex Mono",monospace;font-size:10px;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;
   border:1px solid var(--line-2);border-bottom-width:2px;border-radius:3px;
-  padding:1px 4px;color:var(--graphite);background:var(--surface);
+  padding:1px 5px;color:var(--graphite);background:var(--surface);
 }
-:where(button,a,input,[tabindex]):focus-visible{
-  outline:2px solid var(--focus);outline-offset:2px;border-radius:3px;
+.btn .kbd{background:transparent}
+.btn-solid .kbd{border-color:color-mix(in srgb,var(--inv-ink) 45%,transparent);color:var(--inv-ink)}
+:where(button,a,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+
+/* ============ topbar ============ */
+.topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand-mark{width:27px;height:27px;border:1.5px solid var(--ink);border-radius:3px;display:grid;place-items:center;font-family:Archivo;font-weight:800;font-size:13px}
+.brand-name{font-family:Archivo;font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+.who{display:flex;align-items:center;gap:8px}
+.presence{display:flex;align-items:center;gap:6px;padding-left:12px;border-left:1px solid var(--line)}
+.presence .stack{display:flex}
+.presence .stack .avatar{margin-left:-6px;border-width:2px;border-color:var(--paper);box-shadow:0 0 0 1px var(--line-2)}
+.presence .stack .avatar:first-child{margin-left:0}
+.avatar{
+  width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+  border:1px solid var(--line-2);color:var(--ink);background:var(--surface);
 }
+.avatar.filled{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
+.avatar.sm{width:21px;height:21px;font-size:9.5px}
+.avatar.empty{border-style:dashed;color:var(--mist)}
+
+/* ============ wie ben jij ============ */
+.identify{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  border:1px solid var(--ink);background:var(--surface);
+  padding:14px 16px;margin-top:18px;border-radius:4px;
+}
+.identify b{font-family:Archivo;font-size:15px}
+.identify .spacer{flex:1}
 
 /* ============ hero ============ */
-.hero{
-  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
-  gap:48px;align-items:end;
-  padding-block:52px 34px;
-  border-bottom:1px solid var(--ink);
-}
-.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.hero-kicker .rule{height:1px;flex:1;background:var(--line-2);max-width:120px}
-h1.hero-title{
-  font-weight:800;
-  font-size:clamp(46px,8.4vw,108px);
-  line-height:.86;
-  letter-spacing:-.045em;
-  text-transform:uppercase;
-}
+.hero{padding-block:34px 22px}
+h1.hero-title{font-weight:800;font-size:clamp(34px,6vw,64px);line-height:.92;letter-spacing:-.04em;text-transform:uppercase}
 h1.hero-title .thin{font-weight:600;color:var(--graphite)}
-.hero-lede{
-  margin:22px 0 0;max-width:52ch;color:var(--ink-2);font-size:15.5px;line-height:1.6;
+.hero p{margin:14px 0 0;max-width:56ch;color:var(--ink-2);font-size:15px}
+
+/* ============ werkbakken ============ */
+.queues{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding-bottom:26px}
+.queue{
+  font:inherit;text-align:left;cursor:pointer;
+  border:1px solid var(--line-2);background:var(--surface);border-radius:5px;
+  padding:15px 16px;display:flex;flex-direction:column;gap:5px;
+  transition:border-color .12s,background .12s;
 }
-.hero-meta{display:flex;gap:0;flex-wrap:wrap;margin-top:26px;border-top:1px solid var(--line)}
-.hero-meta div{padding:12px 22px 0 0;margin-right:22px;border-right:1px solid var(--line)}
-.hero-meta div:last-child{border-right:0;margin-right:0}
-.hero-meta dt{margin:0 0 3px}
-.hero-meta dd{margin:0;font-family:Archivo;font-weight:700;font-size:17px;letter-spacing:-.01em}
+.queue:hover{border-color:var(--ink)}
+.queue-n{font-family:Archivo;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.03em}
+.queue-l{font-size:13px;color:var(--ink-2);font-weight:500}
+.queue-h{font-size:11.5px;color:var(--mist)}
+.queue[aria-pressed="true"]{background:var(--inv-ground);border-color:var(--inv-ground)}
+.queue[aria-pressed="true"] .queue-n,.queue[aria-pressed="true"] .queue-l{color:var(--inv-ink)}
+.queue[aria-pressed="true"] .queue-h{color:var(--inv-ink);opacity:.65}
+.queue.alert .queue-n::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ink);margin-left:8px;vertical-align:6px}
+.queue.alert[aria-pressed="true"] .queue-n::after{background:var(--inv-ink)}
 
-/* pipeline meter */
-.meter{border:1px solid var(--line);background:var(--surface);padding:18px 18px 16px}
-.meter-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
-.meter-total{font-family:Archivo;font-weight:800;font-size:30px;letter-spacing:-.02em;line-height:1}
-.meter-bar{display:flex;height:34px;gap:2px;margin-bottom:12px}
-.meter-seg{position:relative;min-width:3px;display:grid;place-items:center;overflow:hidden}
-.meter-seg span{
-  font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:500;
-  mix-blend-mode:normal;
-}
-.meter-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px}
-.leg{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2)}
-.leg i{width:10px;height:10px;flex:none;border:1px solid var(--ink)}
-.leg b{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11.5px}
-
-/* ============ quickbar ============ */
-.quickbar{
-  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
-  padding-block:16px;border-bottom:1px solid var(--line);
-}
-.quickbar .eyebrow{margin-right:6px}
-.quickbar .spacer{flex:1}
-
-/* ============ kpi row ============ */
-.kpis{
-  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
-  border-bottom:1px solid var(--line);
-}
-.kpi{padding:20px 22px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
-.kpi:last-child{border-right:0}
-.kpi-val{font-family:Archivo;font-weight:800;font-size:28px;letter-spacing:-.025em;line-height:1}
-.kpi-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
-.delta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite)}
-.delta.up::before{content:"▲ ";font-size:8px}
-.delta.down::before{content:"▼ ";font-size:8px}
-.spark{display:block;color:var(--ink)}
-
-/* ============ slide ============ */
-.slide-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:34px 14px}
-.slide-head h2{font-size:22px;font-weight:700;letter-spacing:-.02em}
-.slide-head .sep{color:var(--line-2)}
-.slide-head p{margin:0;color:var(--graphite);font-size:13px}
-
-.slide{
-  border:1px solid var(--ink);background:var(--surface);
-  display:grid;grid-template-columns:236px minmax(0,1fr) 320px;
-  align-items:stretch;
-}
-
-/* rail */
-.rail{border-right:1px solid var(--line);padding:18px 0;display:flex;flex-direction:column;gap:22px}
-.rail-block{padding-inline:16px}
-.rail-block > .eyebrow{display:block;margin-bottom:9px}
-.views{display:flex;flex-direction:column;gap:1px}
-.view-btn{
-  font:inherit;text-align:left;background:transparent;border:0;cursor:pointer;
-  display:flex;align-items:center;gap:10px;
-  padding:7px 9px;border-radius:3px;color:var(--ink-2);font-size:13px;
-}
-.view-btn:hover{background:var(--surface-3)}
-.view-btn .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mist)}
-.view-btn[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:500}
-.view-btn[aria-pressed="true"] .cnt{color:var(--inv-ink);opacity:.7}
-.view-btn .tick{width:3px;height:14px;background:transparent;flex:none;border-radius:2px}
-.view-btn[aria-pressed="true"] .tick{background:var(--inv-ink)}
-
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.03em;
-  border:1px solid var(--line-2);border-radius:999px;padding:3px 9px;
-  background:transparent;color:var(--graphite);cursor:pointer;
-}
-.chip:hover{border-color:var(--ink);color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
-
-.owners{display:flex;flex-direction:column;gap:2px}
-.owner-btn{
-  display:flex;align-items:center;gap:9px;font:inherit;font-size:13px;
-  background:transparent;border:0;cursor:pointer;padding:5px 9px;border-radius:3px;color:var(--ink-2);
-}
-.owner-btn:hover{background:var(--surface-3)}
-.owner-btn[aria-pressed="true"]{background:var(--surface-3);color:var(--ink);font-weight:500}
-.owner-btn .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--mist)}
-
-.avatar{
-  width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;
-  font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;
-  border:1px solid var(--ink);color:var(--ink);background:var(--surface);
-}
-.avatar.filled{background:var(--inv-ground);color:var(--inv-ink)}
-
-/* funnel */
-.funnel{display:flex;flex-direction:column;gap:7px}
-.fn-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;align-items:center}
-.fn-label{font-size:11.5px;color:var(--ink-2)}
-.fn-count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite)}
-.fn-track{grid-column:1/-1;height:9px;background:var(--surface-3);position:relative}
-.fn-fill{height:100%;background:var(--ink);border-radius:0 2px 2px 0}
-
-/* center */
+/* ============ werkblad ============ */
+.slide{border:1px solid var(--ink);border-radius:5px;overflow:hidden;background:var(--surface);display:grid;grid-template-columns:minmax(0,1fr) 330px}
 .center{min-width:0;display:flex;flex-direction:column}
-.toolbar{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);
-}
-.search{
-  display:flex;align-items:center;gap:8px;flex:1;min-width:200px;
-  border:1px solid var(--line-2);background:var(--surface);border-radius:3px;padding:0 10px;
-}
+.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.search{display:flex;align-items:center;gap:8px;flex:1;min-width:190px;border:1px solid var(--line-2);background:var(--surface);border-radius:4px;padding:0 10px}
 .search:focus-within{border-color:var(--ink)}
-.search svg{flex:none;color:var(--mist)}
-.search input{
-  font:inherit;font-size:13.5px;border:0;background:transparent;color:var(--ink);
-  padding:8px 0;width:100%;outline:none;
-}
+.search input{font:inherit;font-size:14px;border:0;background:transparent;color:var(--ink);padding:9px 0;width:100%;outline:none}
 .search input::placeholder{color:var(--mist)}
-.seg{display:flex;border:1px solid var(--line-2);border-radius:3px;overflow:hidden;background:var(--surface)}
-.seg button{
-  font:inherit;font-size:12px;background:transparent;border:0;border-right:1px solid var(--line);
-  padding:7px 11px;cursor:pointer;color:var(--graphite);white-space:nowrap;
-}
+.seg{display:flex;border:1px solid var(--line-2);border-radius:4px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:12.5px;background:transparent;border:0;border-right:1px solid var(--line);padding:8px 12px;cursor:pointer;color:var(--graphite);white-space:nowrap}
 .seg button:last-child{border-right:0}
 .seg button:hover{background:var(--surface-3);color:var(--ink)}
-.seg button[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:500}
-.tool-count{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--graphite);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:600}
+.filters{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line)}
+.chip{font-size:12.5px;border:1px solid var(--line-2);border-radius:999px;padding:5px 11px;background:transparent;color:var(--graphite);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
+.chip .avatar{width:18px;height:18px;font-size:9px}
+.chip[aria-pressed="true"] .avatar{background:var(--inv-ink);color:var(--inv-ground);border-color:transparent}
+.count{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--graphite);white-space:nowrap}
 
-.table-scroll{overflow-x:auto;flex:1}
-table{border-collapse:collapse;width:100%;min-width:940px}
+/* ============ lijst ============ */
+.list{overflow-x:auto;flex:1}
+table{border-collapse:collapse;width:100%;min-width:760px}
 thead th{
   position:sticky;top:0;z-index:2;background:var(--surface);
   font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:10px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--mist);
-  text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;
+  text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap;
 }
-thead th button{
-  font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;
-  display:inline-flex;align-items:center;gap:5px;letter-spacing:inherit;text-transform:inherit;
-}
+thead th button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit;text-transform:inherit}
 thead th button:hover{color:var(--ink)}
-thead th .arw{opacity:0}
 thead th.sorted button{color:var(--ink)}
+thead th .arw{opacity:0}
 thead th.sorted .arw{opacity:1}
 tbody tr{border-bottom:1px solid var(--line);cursor:pointer}
 tbody tr:hover{background:var(--surface-2)}
 tbody tr[aria-selected="true"]{background:var(--surface-3)}
-tbody td{padding:10px 12px;vertical-align:middle}
-td.rail-cell{padding:0;width:4px;position:relative}
-.sev{position:absolute;inset:0;width:4px;background:var(--line-2)}
-.sev.s3{background:var(--ink)}
-.sev.s2{background:var(--graphite)}
-.sev.s1{background:var(--line-2)}
-.co{font-weight:600;font-size:13.5px;letter-spacing:-.005em}
-.co-sub{font-size:11.5px;color:var(--graphite);margin-top:1px}
-.src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-2);white-space:nowrap;
-  border:1px solid var(--line);padding:2px 7px;border-radius:2px;display:inline-block}
-.score{display:flex;align-items:center;gap:8px}
-.score-track{width:38px;height:5px;background:var(--surface-3);flex:none}
-.score-fill{height:100%;background:var(--ink)}
-.score b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:12px;font-variant-numeric:tabular-nums}
-.val{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.next{font-size:12.5px;color:var(--ink-2);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ago{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--graphite);white-space:nowrap}
-.ago.stale{color:var(--ink);font-weight:500}
-.ago.stale::after{content:" ●";font-size:8px;vertical-align:2px}
-.rowacts{display:flex;gap:4px;opacity:0;transition:opacity .12s}
+tbody td{padding:11px 12px;vertical-align:middle}
+td.star-cell,th.star-cell{width:34px;padding-right:0}
+.star{background:none;border:0;cursor:pointer;font-size:15px;line-height:1;padding:2px;color:var(--line-2)}
+.star:hover{color:var(--graphite)}
+.star.on{color:var(--ink)}
+.co{font-weight:600;font-size:14px;letter-spacing:-.005em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.co-sub{font-size:12px;color:var(--graphite);margin-top:2px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:2px;padding:1px 5px;color:var(--graphite)}
+.watching{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--inv-ink);background:var(--inv-ground);border-radius:2px;padding:2px 6px;white-space:nowrap}
+.next-wrap{display:flex;flex-direction:column;gap:4px;min-width:170px}
+.next{font-size:13px;color:var(--ink-2);max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.next.none{color:var(--mist);font-style:italic}
+.rowacts{display:flex;gap:5px;opacity:0;transition:opacity .12s}
 tr:hover .rowacts,tr[aria-selected="true"] .rowacts{opacity:1}
-.iconbtn{
-  width:24px;height:24px;display:grid;place-items:center;font-size:12px;
-  border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);
-  border-radius:3px;cursor:pointer;padding:0;line-height:1;font-family:"IBM Plex Mono",monospace;
-}
+.iconbtn{width:27px;height:27px;display:grid;place-items:center;font-size:13px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:4px;cursor:pointer;padding:0;line-height:1;font-family:"IBM Plex Mono",monospace}
 .iconbtn:hover{border-color:var(--ink);color:var(--ink)}
-.empty{padding:56px 20px;text-align:center;color:var(--graphite)}
+.empty{padding:52px 20px;text-align:center;color:var(--graphite)}
 .empty strong{display:block;font-family:Archivo;font-size:16px;color:var(--ink);margin-bottom:6px}
 
-/* fase pills — monochroom: vulling + contour dragen de status, tekst benoemt hem */
-.pill{
-  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;
-  padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--graphite);
-}
+/* status-pills — vulling en contour dragen de status, tekst benoemt hem */
+.pill{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--graphite)}
 .pill::before{content:"";width:6px;height:6px;border-radius:50%;border:1px solid currentColor;flex:none}
-.pill.f-nieuw{border-style:dashed}
-.pill.f-gecontacteerd{color:var(--ink-2);border-color:var(--line-2)}
-.pill.f-gecontacteerd::before{background:currentColor;opacity:.3}
-.pill.f-gekwalificeerd{background:color-mix(in srgb,var(--ink) 12%,var(--surface));border-color:transparent;color:var(--ink)}
-.pill.f-gekwalificeerd::before{background:currentColor;opacity:.5}
-.pill.f-voorstel{background:color-mix(in srgb,var(--ink) 30%,var(--surface));border-color:transparent;color:var(--ink)}
-.pill.f-voorstel::before{background:currentColor;opacity:.75}
-.pill.f-opvolgen{background:color-mix(in srgb,var(--ink) 62%,var(--surface));border-color:transparent;color:var(--surface)}
-.pill.f-opvolgen::before{background:currentColor}
-.pill.f-gewonnen{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
-.pill.f-gewonnen::before{background:currentColor}
-.pill.f-verloren{border-style:dotted;color:var(--mist)}
-.pill.f-verloren::before{border-style:dotted}
+.pill.s-nieuw{border-style:dashed}
+.pill.s-contact{color:var(--ink-2);border-color:var(--line-2)}
+.pill.s-contact::before{background:currentColor;opacity:.35}
+.pill.s-voorstel{background:color-mix(in srgb,var(--ink) 22%,var(--surface));border-color:transparent;color:var(--ink)}
+.pill.s-voorstel::before{background:currentColor;opacity:.7}
+.pill.s-opvolgen{background:color-mix(in srgb,var(--ink) 62%,var(--surface));border-color:transparent;color:var(--surface)}
+.pill.s-opvolgen::before{background:currentColor}
+.pill.s-gewonnen{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
+.pill.s-gewonnen::before{background:currentColor}
+.pill.s-verloren{border-style:dotted;color:var(--mist)}
+.pill.s-verloren::before{border-style:dotted}
 
-/* detail */
-.detail{border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface-2)}
-.detail-head{padding:18px 18px 16px;border-bottom:1px solid var(--line)}
-.detail-co{font-family:Archivo;font-weight:700;font-size:19px;letter-spacing:-.02em;line-height:1.15}
-.detail-person{color:var(--graphite);font-size:12.5px;margin-top:3px}
-.detail-id{margin-top:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.detail-body{padding:16px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
-.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:12.5px}
-.facts dt{color:var(--mist);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
-.facts dd{margin:0;color:var(--ink);word-break:break-word}
-.facts a{color:inherit}
-.actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.actions-grid .btn{justify-content:center}
-.stepper{display:flex;flex-direction:column;gap:6px}
-.step-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--graphite)}
-.step-row .idx{
-  width:18px;height:18px;border:1px solid var(--line-2);border-radius:50%;flex:none;
-  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:9px;
-}
-.step-row.done{color:var(--ink)}
-.step-row.done .idx{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
-.step-row.current{color:var(--ink);font-weight:600}
-.step-row.current .idx{border-color:var(--ink);border-width:2px}
-.timeline{display:flex;flex-direction:column;gap:0}
-.tl{display:grid;grid-template-columns:14px 1fr;gap:10px;padding-bottom:12px;position:relative}
-.tl:not(:last-child)::before{content:"";position:absolute;left:6px;top:14px;bottom:0;width:1px;background:var(--line)}
-.tl i{width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);margin-top:5px;background:var(--surface-2);z-index:1}
-.tl:first-child i{background:var(--ink)}
-.tl-t{font-size:12.5px;color:var(--ink)}
-.tl-d{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--mist);margin-top:1px}
-.note{
-  font:inherit;font-size:12.5px;width:100%;resize:vertical;min-height:64px;
-  border:1px solid var(--line-2);border-radius:3px;background:var(--surface);color:var(--ink);padding:8px 10px;
-}
-.note:focus{outline:none;border-color:var(--ink)}
-.detail-empty{padding:48px 20px;text-align:center;color:var(--graphite);font-size:13px}
-
-.blk > .eyebrow{display:block;margin-bottom:9px}
-
-/* footer */
-.legend{
-  display:flex;gap:18px;flex-wrap:wrap;align-items:center;
-  padding-block:18px;border-top:1px solid var(--line);margin-top:26px;
-  font-size:12px;color:var(--graphite);
-}
-.legend .grp{display:flex;align-items:center;gap:7px}
-.disclaimer{margin-top:4px;font-size:11.5px;color:var(--mist);max-width:70ch}
-
-/* ============ weergavemodus ============ */
-.viewmode{display:flex;border:1px solid var(--ink);border-radius:3px;overflow:hidden;background:var(--surface)}
-.viewmode button{
-  font:inherit;font-size:12px;background:transparent;border:0;border-right:1px solid var(--line);
-  padding:7px 13px;cursor:pointer;color:var(--graphite);white-space:nowrap;
-}
-.viewmode button:last-child{border-right:0}
-.viewmode button:hover{background:var(--surface-3);color:var(--ink)}
-.viewmode button[aria-pressed="true"]{background:var(--inv-ground);color:var(--inv-ink);font-weight:600}
-
-/* ============ selectie + bulkbalk ============ */
-.cb{width:15px;height:15px;margin:0;accent-color:var(--ink);cursor:pointer;flex:none}
-th.cb-cell,td.cb-cell{width:32px;padding-right:0}
-.bulk{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  padding:10px 16px;border-bottom:1px solid var(--line);
-  background:var(--inv-ground);color:var(--inv-ink);
-}
-.bulk-count{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-right:4px}
-.bulk .btn{background:transparent;color:var(--inv-ink);border-color:color-mix(in srgb,var(--inv-ink) 40%,transparent)}
-.bulk .btn:hover{background:color-mix(in srgb,var(--inv-ink) 14%,transparent);border-color:var(--inv-ink);color:var(--inv-ink)}
-.bulk select{
-  font:inherit;font-size:12px;padding:6px 8px;border-radius:3px;cursor:pointer;
-  background:var(--inv-ground);color:var(--inv-ink);
-  border:1px solid color-mix(in srgb,var(--inv-ink) 40%,transparent);
-}
-.bulk .divider{width:1px;height:20px;background:color-mix(in srgb,var(--inv-ink) 25%,transparent)}
-.bulk .spacer{flex:1}
-
-/* ============ follow-up ============ */
-.fu{
-  position:relative;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
-  font-family:"IBM Plex Mono",monospace;font-size:11px;
-  border:1px solid var(--line);border-radius:3px;padding:3px 7px;
-  background:var(--surface);color:var(--ink-2);cursor:pointer;
-}
+/* follow-up */
+.fu{position:relative;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:3px 8px;background:var(--surface);color:var(--ink-2);cursor:pointer}
 .fu:hover{border-color:var(--ink);color:var(--ink)}
 .fu input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
 .fu::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.4;flex:none}
@@ -452,241 +213,173 @@ th.cb-cell,td.cb-cell{width:32px;padding-right:0}
 .fu.over{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink);font-weight:500}
 .fu.over::before{opacity:1}
 .fu.none{border-style:dashed;color:var(--mist)}
-.fu.none::before{opacity:.25}
 
-/* ============ pipeline-bord ============ */
+/* ============ bord ============ */
 .board{display:none;overflow-x:auto;flex:1}
 .board.on{display:flex}
-.col{
-  border-right:1px solid var(--line);min-width:216px;flex:1 0 216px;
-  display:flex;flex-direction:column;background:var(--surface);
-}
+.col{border-right:1px solid var(--line);min-width:206px;flex:1 0 206px;display:flex;flex-direction:column;background:var(--surface)}
 .col:last-child{border-right:0}
 .col.drop{background:var(--surface-3)}
-.col-head{
-  padding:11px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);
-  display:flex;align-items:baseline;gap:8px;position:sticky;top:0;z-index:1;
-}
-.col-head .eyebrow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.col-head b{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;color:var(--ink)}
-.col-sum{
-  padding:6px 12px;border-bottom:1px solid var(--line);
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--mist);
-}
-.col-body{padding:9px;display:flex;flex-direction:column;gap:7px;min-height:90px;flex:1}
-.card{
-  border:1px solid var(--line-2);background:var(--surface);border-radius:3px;
-  padding:9px 10px;cursor:grab;display:flex;flex-direction:column;gap:7px;
-}
+.col-head{padding:11px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);display:flex;align-items:baseline;gap:8px;position:sticky;top:0;z-index:1}
+.col-head b{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11.5px;color:var(--ink)}
+.col-body{padding:9px;display:flex;flex-direction:column;gap:8px;min-height:80px;flex:1}
+.card{border:1px solid var(--line-2);background:var(--surface);border-radius:4px;padding:10px;cursor:grab;display:flex;flex-direction:column;gap:8px}
 .card:hover{border-color:var(--ink)}
 .card.dragging{opacity:.4}
 .card[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .card-top{display:flex;align-items:flex-start;gap:8px}
-.card-co{font-weight:600;font-size:12.5px;line-height:1.25;letter-spacing:-.005em}
-.card-sub{font-size:11px;color:var(--graphite);margin-top:1px}
-.card-top .avatar{width:19px;height:19px;font-size:8.5px;margin-left:auto}
-.card-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.card-foot .val{font-size:11.5px;font-weight:500}
+.card-co{font-weight:600;font-size:13px;line-height:1.25}
+.card-sub{font-size:11.5px;color:var(--graphite);margin-top:2px}
+.card-foot{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .card-acts{display:flex;gap:4px;margin-left:auto}
-.board-empty{padding:14px 4px;text-align:center;color:var(--mist);font-size:11px;border:1px dashed var(--line);border-radius:3px}
+.board-empty{padding:16px 6px;text-align:center;color:var(--mist);font-size:11.5px;border:1px dashed var(--line);border-radius:4px}
+
+/* ============ detail ============ */
+.detail{border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--surface-2)}
+.detail-head{padding:18px;border-bottom:1px solid var(--line)}
+.detail-co{font-family:Archivo;font-weight:700;font-size:20px;letter-spacing:-.02em;line-height:1.15}
+.detail-person{color:var(--graphite);font-size:13px;margin-top:3px}
+.detail-body{padding:16px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
+.blk > .eyebrow{display:block;margin-bottom:9px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.two .btn{justify-content:center}
+.steps{display:flex;flex-direction:column;gap:4px}
+.step{
+  font:inherit;font-size:13px;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:4px;
+  border:1px solid transparent;background:transparent;color:var(--graphite);
+}
+.step:hover{background:var(--surface-3);color:var(--ink)}
+.step .idx{width:19px;height:19px;border:1px solid var(--line-2);border-radius:50%;flex:none;display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:9.5px}
+.step .kbd{margin-left:auto}
+.step.done{color:var(--ink-2)}
+.step.done .idx{background:var(--inv-ground);color:var(--inv-ink);border-color:var(--inv-ground)}
+.step.now{background:var(--inv-ground);color:var(--inv-ink);font-weight:600}
+.step.now .idx{border-color:var(--inv-ink);border-width:2px}
+.step.now .kbd{border-color:color-mix(in srgb,var(--inv-ink) 45%,transparent);color:var(--inv-ink);background:transparent}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:13px;align-items:center}
+.facts dt{color:var(--mist);font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.facts dd{margin:0;word-break:break-word}
+.facts a{color:inherit}
+.field{font:inherit;font-size:13px;width:100%;border:1px solid var(--line-2);border-radius:4px;background:var(--surface);color:var(--ink);padding:8px 10px}
+.field:focus{outline:none;border-color:var(--ink)}
+textarea.field{resize:vertical;min-height:56px}
+.log{display:flex;flex-direction:column;gap:0}
+.log-item{display:grid;grid-template-columns:14px 1fr;gap:10px;padding-bottom:11px;position:relative}
+.log-item:not(:last-child)::before{content:"";position:absolute;left:6px;top:14px;bottom:0;width:1px;background:var(--line)}
+.log-item i{width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);margin-top:5px;background:var(--surface-2);z-index:1}
+.log-item:first-child i{background:var(--ink)}
+.log-t{font-size:12.5px}
+.log-d{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--mist);margin-top:1px}
+.detail-empty{padding:44px 20px;text-align:center;color:var(--graphite);font-size:13.5px}
+
+/* ============ sneltoetsen ============ */
+.help{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;padding:20px;z-index:50}
+.help-card{background:var(--surface);border:1px solid var(--ink);border-radius:6px;max-width:520px;width:100%;padding:22px 24px;max-height:85vh;overflow-y:auto}
+.help-card h2{font-size:18px;margin-bottom:4px}
+.help-grid{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;margin-top:16px;font-size:13.5px;align-items:center}
+.help-grid span:first-child{white-space:nowrap}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding-block:18px;border-top:1px solid var(--line);margin-top:22px;font-size:12.5px;color:var(--graphite)}
+.legend .grp{display:flex;align-items:center;gap:7px}
+.foot-note{margin:2px 0 0;font-size:12px;color:var(--mist);max-width:70ch}
 
 /* ============ responsive ============ */
-@media (max-width:1180px){
-  .slide{grid-template-columns:210px minmax(0,1fr)}
-  .detail{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
-  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .kpi:nth-child(3){border-right:0}
-  .kpi:nth-child(n+4){border-top:1px solid var(--line)}
+@media (max-width:1120px){
+  .slide{grid-template-columns:minmax(0,1fr)}
+  .detail{border-left:0;border-top:1px solid var(--line)}
+  .queues{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:900px){
-  .hero{grid-template-columns:1fr;gap:32px;align-items:start;padding-block:36px 26px}
-  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .kpi{border-right:1px solid var(--line)}
-  .kpi:nth-child(2n){border-right:0}
-  .kpi:nth-child(n+3){border-top:1px solid var(--line)}
-  .slide{grid-template-columns:1fr}
-  .rail{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;gap:18px}
-  .rail-block{flex:1;min-width:190px}
-}
-@media (max-width:560px){
+@media (max-width:620px){
   .wrap{padding-inline:16px}
-  .kpis{grid-template-columns:1fr}
-  .kpi{border-right:0;border-top:1px solid var(--line)}
-  .kpi:first-child{border-top:0}
-  .hero-meta div{border-right:0;padding-right:0;margin-right:16px}
-  .meter-legend{grid-template-columns:1fr}
+  .queues{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .presence{padding-left:0;border-left:0}
 }
-@media (prefers-reduced-motion:reduce){
-  *{transition:none!important;animation:none!important}
-}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
 <div class="wrap">
 
-  <!-- ============ topbar ============ -->
   <header class="topbar">
     <div class="brand">
       <div class="brand-mark">T</div>
-      <div>
-        <div class="brand-name">Test Dashboard</div>
-      </div>
-      <div class="brand-sub">Marketing &amp; Sales · Q3 2026</div>
+      <div class="brand-name">Test Dashboard</div>
     </div>
-    <div class="topbar-actions">
-      <span class="sync" id="syncBadge"><i class="dot"></i><span id="syncText">Lokale sessie</span></span>
-      <button class="btn btn-sm" id="themeBtn" type="button">Thema</button>
-      <button class="btn btn-sm" id="resetBtn" type="button">Reset data</button>
-    </div>
+    <div class="presence" id="presence" hidden></div>
+    <div class="who" id="who"></div>
+    <button class="btn btn-sm" id="helpBtn" type="button">Sneltoetsen <span class="kbd">?</span></button>
+    <button class="btn btn-sm" id="themeBtn" type="button">Thema</button>
   </header>
 
-  <!-- ============ hero ============ -->
-  <section class="hero">
-    <div>
-      <div class="hero-kicker">
-        <span class="eyebrow">Werkblad 01 — Leadoverzicht</span>
-        <span class="rule"></span>
-      </div>
-      <h1 class="hero-title">Test<br>Dashboard<br><span class="thin">Sales</span></h1>
-      <p class="hero-lede">
-        Eén werkblad voor het volledige marketingteam. Elke lead die binnenkomt via
-        campagnes, beurzen of doorverwijzing staat hier — gefilterd, gescoord en
-        toegewezen. Klik een rij aan en schakel meteen door naar de volgende stap.
-      </p>
-      <dl class="hero-meta">
-        <div><dt class="eyebrow">Bijgewerkt</dt><dd id="mUpdated">Vandaag 09:41</dd></div>
-        <div><dt class="eyebrow">Leads in beeld</dt><dd id="mLeads">28</dd></div>
-        <div><dt class="eyebrow">Team</dt><dd>4 accounts</dd></div>
-        <div><dt class="eyebrow">Periode</dt><dd>13 wk rollend</dd></div>
-      </dl>
-    </div>
-
-    <div class="meter">
-      <div class="meter-head">
-        <div>
-          <span class="eyebrow">Open pipeline</span>
-          <div class="meter-total num" id="pipeTotal">€ 0</div>
-        </div>
-        <span class="delta up mono" id="pipeDelta">12,4% vs. vorige maand</span>
-      </div>
-      <div class="meter-bar" id="meterBar"></div>
-      <div class="meter-legend" id="meterLegend"></div>
-    </div>
-  </section>
-
-  <!-- ============ quick actions ============ -->
-  <nav class="quickbar" aria-label="Snelacties">
-    <span class="eyebrow">Snel door</span>
-    <button class="btn btn-solid btn-sm" data-quick="nieuw" type="button">+ Nieuwe lead</button>
-    <button class="btn btn-sm" data-quick="open" type="button">Open <span class="kbd">O</span></button>
-    <button class="btn btn-sm" data-quick="vandaag" type="button">Follow-up vandaag <span class="kbd">V</span></button>
-    <button class="btn btn-sm" data-quick="hot" type="button">Hot leads <span class="kbd">H</span></button>
-    <button class="btn btn-sm" data-quick="stil" type="button">Te lang stil <span class="kbd">S</span></button>
-    <button class="btn btn-sm" data-quick="mijn" type="button">Mijn leads <span class="kbd">M</span></button>
+  <div class="identify" id="identify" hidden>
+    <b>Wie ben jij?</b>
+    <span style="color:var(--graphite);font-size:13.5px">Kies jezelf, dan staan jouw leads meteen vooraan.</span>
     <span class="spacer"></span>
-    <button class="btn btn-sm" data-quick="import" type="button">Import CSV</button>
-    <button class="btn btn-sm" data-quick="export" type="button">Export selectie</button>
-  </nav>
-
-  <!-- ============ kpi's ============ -->
-  <section class="kpis" id="kpis" aria-label="Kerncijfers"></section>
-
-  <!-- ============ slide ============ -->
-  <div class="slide-head">
-    <h2>Leadwerkblad</h2>
-    <span class="sep">/</span>
-    <p>Filter links, werk in het midden, schakel door rechts. Alles wat je aanpast blijft staan voor de rest van het team.</p>
+    <span id="identifyBtns" style="display:flex;gap:8px;flex-wrap:wrap"></span>
   </div>
 
+  <section class="hero">
+    <h1 class="hero-title">Test<br>Dashboard <span class="thin">Sales</span></h1>
+    <p>Alle leads op één plek. Elke lead heeft één eigenaar en één volgende stap met een datum — zo weet iedereen wie wat doet en belt niemand dezelfde persoon twee keer.</p>
+  </section>
+
+  <nav class="queues" id="queues" aria-label="Werkbakken"></nav>
+
   <section class="slide">
-
-    <!-- rail -->
-    <aside class="rail" aria-label="Filters en weergaven">
-      <div class="rail-block">
-        <span class="eyebrow">Weergaven</span>
-        <div class="views" id="views"></div>
-      </div>
-
-      <div class="rail-block">
-        <span class="eyebrow">Bron</span>
-        <div class="chips" id="bronChips"></div>
-      </div>
-
-      <div class="rail-block">
-        <span class="eyebrow">Eigenaar</span>
-        <div class="owners" id="owners"></div>
-      </div>
-
-      <div class="rail-block">
-        <span class="eyebrow">Trechter · aantal leads</span>
-        <div class="funnel" id="funnel"></div>
-      </div>
-    </aside>
-
-    <!-- center -->
     <div class="center">
       <div class="toolbar">
         <label class="search" for="q">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <circle cx="6" cy="6" r="4.25" stroke="currentColor" stroke-width="1.5"/>
             <path d="M9.2 9.2 12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <input id="q" type="search" placeholder="Zoek op bedrijf, contact, stad of bron…" autocomplete="off">
+          <input id="q" type="search" placeholder="Zoek bedrijf, contact of stad…" autocomplete="off">
           <span class="kbd">/</span>
         </label>
-        <div class="seg" id="typeSeg" role="group" aria-label="Filter op type"></div>
-        <div class="seg" id="faseSeg" role="group" aria-label="Filter op fase"></div>
-        <span class="tool-count num" id="rowCount">—</span>
-        <div class="viewmode" id="modeToggle" role="group" aria-label="Weergave">
+        <div class="seg" id="modeToggle" role="group" aria-label="Weergave">
           <button type="button" data-mode="lijst" aria-pressed="true">Lijst</button>
-          <button type="button" data-mode="pipeline" aria-pressed="false">Pipeline</button>
+          <button type="button" data-mode="bord" aria-pressed="false">Bord</button>
         </div>
+        <button class="btn btn-sm" id="exportBtn" type="button">Exporteer</button>
       </div>
 
-      <div class="bulk" id="bulkBar" hidden></div>
+      <div class="filters" id="filters"></div>
 
-      <div class="table-scroll" id="listView">
-        <table id="tbl">
+      <div class="list" id="listView">
+        <table>
           <thead>
             <tr>
-              <th scope="col" aria-label="Prioriteit"></th>
-              <th scope="col" class="cb-cell"><input type="checkbox" class="cb" id="cbAll" aria-label="Alles in deze selectie aanvinken"></th>
-              <th scope="col" data-sort="bedrijf"><button type="button">Bedrijf / contact <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="bron"><button type="button">Bron <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="score"><button type="button">Score <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="waarde"><button type="button">Waarde <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="fase"><button type="button">Fase <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="eigenaar"><button type="button">Eig. <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="dagen"><button type="button">Laatst <span class="arw">↓</span></button></th>
-              <th scope="col" data-sort="fuDagen"><button type="button">Follow-up <span class="arw">↓</span></button></th>
-              <th scope="col">Volgende stap</th>
+              <th scope="col" class="star-cell" aria-label="Belangrijk"></th>
+              <th scope="col" data-sort="bedrijf"><button type="button">Bedrijf <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="status"><button type="button">Status <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="eigenaar"><button type="button">Van wie <span class="arw">↓</span></button></th>
+              <th scope="col" data-sort="fuDagen"><button type="button">Volgende stap <span class="arw">↓</span></button></th>
               <th scope="col" aria-label="Acties"></th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
         <div class="empty" id="empty" hidden>
-          <strong>Geen leads in deze selectie</strong>
-          Pas je filters aan of wis het zoekveld.
+          <strong>Niets in deze bak</strong>
+          Kies een andere werkbak hierboven, of wis het zoekveld.
         </div>
       </div>
 
       <div class="board" id="boardView"></div>
     </div>
 
-    <!-- detail -->
     <aside class="detail" id="detail" aria-label="Leaddetail"></aside>
   </section>
 
   <footer class="legend">
-    <div class="grp"><span class="eyebrow">Sneltoetsen</span></div>
-    <div class="grp"><span class="kbd">/</span> zoeken</div>
-    <div class="grp"><span class="kbd">J</span><span class="kbd">K</span> rij op/neer</div>
-    <div class="grp"><span class="kbd">1</span>–<span class="kbd">7</span> fase zetten</div>
-    <div class="grp"><span class="kbd">P</span> lijst ⇄ pipeline</div>
-    <div class="grp"><span class="kbd">→</span> fase vooruit</div>
-    <div class="grp"><span class="kbd">Esc</span> selectie los</div>
+    <div class="grp"><span class="eyebrow">Snel werken</span></div>
+    <div class="grp"><span class="kbd">J</span><span class="kbd">K</span> door de lijst</div>
+    <div class="grp"><span class="kbd">1</span>–<span class="kbd">5</span> status zetten</div>
+    <div class="grp"><span class="kbd">C</span> lead overnemen</div>
+    <div class="grp"><span class="kbd">B</span> bellen</div>
+    <div class="grp"><span class="kbd">?</span> alle sneltoetsen</div>
   </footer>
-  <p class="disclaimer">Voorbeelddata — 28 fictieve leads om het werkblad te tonen. Vervang ze door je eigen export en de tellingen, trechter en grafieken rekenen automatisch mee.</p>
+  <p class="foot-note" id="footNote">Voorbeelddata — 28 verzonnen leads om mee te testen.</p>
 
 </div>
 
@@ -694,375 +387,314 @@ th.cb-cell,td.cb-cell{width:32px;padding-right:0}
 (function(){
 "use strict";
 
-/* ---------------- data ---------------- */
-var FASES = [
-  {key:"nieuw",          label:"Nieuw"},
-  {key:"gecontacteerd",  label:"Gecontacteerd"},
-  {key:"gekwalificeerd", label:"Gekwalificeerd"},
-  {key:"voorstel",       label:"Voorstel"},
-  {key:"opvolgen",       label:"Opvolgen"},
-  {key:"gewonnen",       label:"Gewonnen"},
-  {key:"verloren",       label:"Verloren"}
+/* ================= status ================= */
+var STATUS = [
+  {key:"nieuw",    label:"Nieuw",         hint:"binnengekomen, nog niets mee gedaan"},
+  {key:"contact",  label:"Contact gehad", hint:"gebeld of gemaild, wacht op vervolg"},
+  {key:"voorstel", label:"Voorstel",      hint:"offerte of voorstel verstuurd"},
+  {key:"opvolgen", label:"Opvolgen",      hint:"wacht op hun antwoord"},
+  {key:"gewonnen", label:"Gewonnen",      hint:"klant geworden"},
+  {key:"verloren", label:"Verloren",      hint:"gaat niet door"}
 ];
-var OPEN_FASES  = ["nieuw","gecontacteerd","gekwalificeerd","voorstel","opvolgen"];
-var BOARD_FASES = ["nieuw","gecontacteerd","gekwalificeerd","voorstel","opvolgen","gewonnen"];
+var OPEN   = ["nieuw","contact","voorstel","opvolgen"];
+var BOARD  = ["nieuw","contact","voorstel","opvolgen","gewonnen"];
+function label(k){ for(var i=0;i<STATUS.length;i++) if(STATUS[i].key===k) return STATUS[i].label; return k; }
+function sIndex(k){ for(var i=0;i<STATUS.length;i++) if(STATUS[i].key===k) return i; return 0; }
+function isOpen(l){ return OPEN.indexOf(l.status)>-1; }
 
-/* datumhulp voor follow-ups */
+/* ================= team ================= */
+var TEAM_DEFAULT = [{id:"W",naam:"Wiebren"},{id:"Y",naam:"Yren"},{id:"L",naam:"Lenny"}];
+var team = TEAM_DEFAULT.slice();
+function lid(id){ for(var i=0;i<team.length;i++) if(team[i].id===id) return team[i]; return null; }
+function naam(id){ var m=lid(id); return m?m.naam:"Niemand"; }
+
+/* ================= datums ================= */
 var TODAY = new Date(); TODAY.setHours(12,0,0,0);
-function isoDay(off){ var d=new Date(TODAY.getTime()+off*864e5); return d.toISOString().slice(0,10); }
-function dayDiff(iso){ if(!iso) return null; var d=new Date(iso+"T12:00:00"); return Math.round((d-TODAY)/864e5); }
+function isoDay(off){ return new Date(TODAY.getTime()+off*864e5).toISOString().slice(0,10); }
+function dayDiff(iso){ if(!iso) return null; return Math.round((new Date(iso+"T12:00:00")-TODAY)/864e5); }
 function fuLabel(iso){
   var n=dayDiff(iso);
   if(n===null) return "geen datum";
   if(n===0) return "vandaag";
   if(n===1) return "morgen";
-  if(n===-1) return "1 d te laat";
-  return n<0 ? (-n)+" d te laat" : "over "+n+" d";
+  if(n<0) return (-n)+" d te laat";
+  if(n<7) return "over "+n+" d";
+  return new Date(iso+"T12:00:00").toLocaleDateString("nl-BE",{day:"numeric",month:"short"});
 }
-var TEAM = {
-  LV:{naam:"Lenny V.", rol:"Account lead"},
-  SD:{naam:"Sara D.",  rol:"Campagnes"},
-  MK:{naam:"Milan K.", rol:"Inbound"},
-  FR:{naam:"Fien R.",  rol:"New business"}
-};
-var MIJ = "LV";
+function nu(){ return new Date().toLocaleDateString("nl-BE",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}); }
 
-/* id, bedrijf, contact, functie, stad, bron, score, waarde, fase, eigenaar, dagen,
-   volgende stap, type, follow-up (dagen t.o.v. vandaag, null = geen) */
+/* ================= voorbeelddata =================
+   id, bedrijf, contact, functie, stad, bron, formulier?, status,
+   eigenaar ("" = vrij), dagen sinds contact, follow-up (dagen, null = geen),
+   volgende stap, ster                                                        */
 var RAW = [
-["L-1051","Nova Logistics","Tom Peeters","COO","Antwerpen","Doorverwijzing",92,42000,"opvolgen","LV",1,"Contract nalezen met jurist","Lead",-1],
-["L-1055","Helix Software","Yasmine Bouzid","Head of Growth","Brussel","Webinar",88,31000,"voorstel","FR",1,"Demo inplannen met team","Lead",4],
-["L-1050","Skyline Vastgoed","Olivier Dupont","Manager marketing","Luik","Webinar",87,46000,"opvolgen","FR",2,"Korting op jaarcontract bevestigen","Lead",3],
-["L-1058","Nordic Kitchen","Emma Lindqvist","Country manager","Brussel","Doorverwijzing",85,37500,"opvolgen","SD",1,"Startdatum campagne vastleggen","Lead",1],
-["L-1042","Vandersteen Interieur","Karel Vandersteen","Zaakvoerder","Hasselt","Beurs",84,18500,"voorstel","LV",2,"Offerte v2 doorsturen","Lead",0],
-["L-1041","Trivium Advocaten","Ellen Baert","Partner","Brussel","Doorverwijzing",83,24800,"voorstel","MK",5,"Referenties uit juridische sector bezorgen","Lead",-1],
-["L-1048","Delacroix Wine","Pierre Delacroix","Sales director","Namen","Doorverwijzing",81,22000,"voorstel","LV",2,"Nabellen over budgetgoedkeuring","Lead",-3],
-["L-1049","Cobalt Labs","Wouter Simoens","Founder","Gent","Webinar",79,19500,"voorstel","FR",3,"Technische scope afstemmen","Lead",4],
-["L-1060","Terra Bouwgroep","Dries Wouters","Marketing manager","Brugge","Beurs",76,27500,"gekwalificeerd","MK",3,"Intake plannen week 38","Lead",1],
-["L-1044","Van Hulle Transport","Jonas Van Hulle","Fleet manager","Zele","Doorverwijzing",74,16200,"opvolgen","LV",4,"Laatste voorwaarden doornemen","Lead",-1],
-["L-1026","Frisco Foods","Nicolas Gillis","Supply lead","Antwerpen","Beurs",72,20500,"gewonnen","FR",16,"Onboarding afgerond — kwartaalreview","Lead",null],
-["L-1039","Brasserie De Kade","Ineke Maes","Marketing lead","Gent","LinkedIn Ads",71,9400,"gekwalificeerd","SD",4,"Contentplan voorstellen","Lead",5],
-["L-1061","Orbit Fitness","Nele Aerts","Franchise manager","Antwerpen","LinkedIn Ads",69,14800,"gekwalificeerd","SD",5,"Cijfers vestigingen opvragen","Lead",3],
-["L-1053","Praktijk Solis","Hanne Coppens","Praktijkhouder","Leuven","Webinar",66,6400,"gekwalificeerd","SD",2,"Voorstel lokale campagne opmaken","Lead",0],
-["L-1059","Atelier Noor","Noor El Amrani","Eigenaar","Brussel","LinkedIn Ads",64,8300,"gekwalificeerd","LV",2,"Beeldmateriaal opvragen","Lead",-2],
-["L-1057","Aquafleur Tuinen","Lotte Vermeulen","Zaakvoerder","Turnhout","Google Search",63,8900,"gecontacteerd","FR",3,"Eerste kennismaking bellen","Contactformulier",-3],
-["L-1036","Elektro Ghys","Pieter Ghys","Zaakvoerder","Aalst","Beurs",61,9800,"gekwalificeerd","FR",8,"Herinnering sturen na beurs","Lead",4],
-["L-1033","Studio Lumen","Anneleen Ryckaert","Creative director","Gent","Nieuwsbrief",58,7600,"nieuw","FR",6,"Kwalificatievragen mailen","Contactformulier",1],
-["L-1064","Halo Optiek","Sam Nuyts","Zaakvoerder","Sint-Niklaas","Meta Ads",57,7200,"gecontacteerd","LV",0,"Binnen 24u opvolgen","Contactformulier",0],
-["L-1065","Verde Landschappen","Hannah Mertens","Zaakvoerder","Genk","Nieuwsbrief",55,9100,"nieuw","MK",0,"Toewijzen aan accountmanager","Contactformulier",-2],
-["L-1063","Sereno Wellness","Marte Janssens","Marketing","Knokke","Meta Ads",52,11200,"gecontacteerd","MK",1,"Formulierantwoorden nakijken","Contactformulier",4],
-["L-1046","Puur Energie","Stijn Vandenbroucke","Sales manager","Brugge","Koud contact",48,13400,"gecontacteerd","SD",7,"Tweede belpoging","Lead",0],
-["L-1028","Fietsen Claes","Sofie Claes","Eigenaar","Leuven","Google Search",46,5200,"nieuw","MK",9,"Nog geen reactie — laatste mail","Contactformulier",-2],
-["L-1030","Groep Vanhecke","Filip Vanhecke","Directeur","Roeselare","Nieuwsbrief",44,6100,"nieuw","MK",11,"Beslissen: opvolgen of afsluiten","Contactformulier",5],
-["L-1023","Bricks & Co","Ruben Decoster","CMO","Antwerpen","LinkedIn Ads",90,58000,"gewonnen","LV",12,"Jaarplan 2027 voorbereiden","Lead",null],
-["L-1021","De Zonnebloem vzw","Katrien Segers","Communicatie","Hasselt","Google Search",39,3200,"verloren","SD",26,"Budget geschrapt — heropenen in Q1","Contactformulier",null],
-["L-1017","Bakkerij Verlinden","Geert Verlinden","Zaakvoerder","Mechelen","Meta Ads",33,3800,"verloren","SD",21,"Koos lokaal bureau","Contactformulier",null],
-["L-1012","Meubelhuis Steyaert","Bart Steyaert","Zaakvoerder","Kortrijk","Koud contact",28,4100,"verloren","MK",30,"Geen interesse — niet opnieuw benaderen","Lead",null]
+["L-1051","Nova Logistics","Tom Peeters","COO","Antwerpen","Doorverwijzing",0,"opvolgen","L",1,-1,"Contract nalezen met jurist",1],
+["L-1055","Helix Software","Yasmine Bouzid","Head of Growth","Brussel","Webinar",0,"voorstel","Y",1,4,"Demo inplannen met hun team",1],
+["L-1050","Skyline Vastgoed","Olivier Dupont","Marketing manager","Luik","Webinar",0,"opvolgen","Y",2,0,"Bellen over de voorwaarden",1],
+["L-1058","Nordic Kitchen","Emma Lindqvist","Country manager","Brussel","Doorverwijzing",0,"opvolgen","W",1,1,"Startdatum campagne vastleggen",0],
+["L-1042","Vandersteen Interieur","Karel Vandersteen","Zaakvoerder","Hasselt","Beurs",0,"voorstel","L",2,0,"Offerte versie 2 doorsturen",1],
+["L-1041","Trivium Advocaten","Ellen Baert","Partner","Brussel","Doorverwijzing",0,"voorstel","W",5,-1,"Referenties uit hun sector bezorgen",0],
+["L-1048","Delacroix Wine","Pierre Delacroix","Sales director","Namen","Doorverwijzing",0,"voorstel","L",2,2,"Nabellen over het budget",0],
+["L-1049","Cobalt Labs","Wouter Simoens","Founder","Gent","Webinar",0,"voorstel","Y",3,4,"Scope afstemmen",0],
+["L-1060","Terra Bouwgroep","Dries Wouters","Marketing manager","Brugge","Beurs",0,"contact","W",3,1,"Intake plannen volgende week",0],
+["L-1044","Van Hulle Transport","Jonas Van Hulle","Fleet manager","Zele","Doorverwijzing",0,"opvolgen","L",4,-2,"Laatste vragen doornemen",0],
+["L-1026","Frisco Foods","Nicolas Gillis","Supply lead","Antwerpen","Beurs",0,"gewonnen","Y",16,null,"",0],
+["L-1039","Brasserie De Kade","Ineke Maes","Marketing lead","Gent","LinkedIn",0,"contact","W",4,3,"Contentplan voorstellen",0],
+["L-1061","Orbit Fitness","Nele Aerts","Franchise manager","Antwerpen","LinkedIn",0,"contact","W",5,-3,"Cijfers per vestiging opvragen",0],
+["L-1053","Praktijk Solis","Hanne Coppens","Praktijkhouder","Leuven","Webinar",0,"contact","W",2,2,"Voorstel lokale campagne maken",0],
+["L-1059","Atelier Noor","Noor El Amrani","Eigenaar","Brussel","LinkedIn",0,"contact","L",2,0,"Beeldmateriaal opvragen",0],
+["L-1057","Aquafleur Tuinen","Lotte Vermeulen","Zaakvoerder","Turnhout","Google",1,"nieuw","",3,null,"",0],
+["L-1036","Elektro Ghys","Pieter Ghys","Zaakvoerder","Aalst","Beurs",0,"contact","Y",8,-4,"Herinnering sturen na de beurs",0],
+["L-1033","Studio Lumen","Anneleen Ryckaert","Creative director","Gent","Nieuwsbrief",1,"nieuw","",6,null,"",0],
+["L-1064","Halo Optiek","Sam Nuyts","Zaakvoerder","Sint-Niklaas","Meta",1,"nieuw","",0,null,"",0],
+["L-1065","Verde Landschappen","Hannah Mertens","Zaakvoerder","Genk","Nieuwsbrief",1,"nieuw","",0,null,"",0],
+["L-1063","Sereno Wellness","Marte Janssens","Marketing","Knokke","Meta",1,"nieuw","",1,null,"",0],
+["L-1046","Puur Energie","Stijn Vandenbroucke","Sales manager","Brugge","Koud contact",0,"nieuw","",7,null,"",0],
+["L-1028","Fietsen Claes","Sofie Claes","Eigenaar","Leuven","Google",1,"contact","Y",9,-2,"Laatste mail sturen",0],
+["L-1030","Groep Vanhecke","Filip Vanhecke","Directeur","Roeselare","Nieuwsbrief",1,"contact","L",11,-4,"Beslissen: opvolgen of afsluiten",0],
+["L-1023","Bricks & Co","Ruben Decoster","CMO","Antwerpen","LinkedIn",0,"gewonnen","L",12,null,"",1],
+["L-1021","De Zonnebloem vzw","Katrien Segers","Communicatie","Hasselt","Google",1,"verloren","W",26,null,"",0],
+["L-1017","Bakkerij Verlinden","Geert Verlinden","Zaakvoerder","Mechelen","Meta",1,"verloren","W",21,null,"",0],
+["L-1012","Meubelhuis Steyaert","Bart Steyaert","Zaakvoerder","Kortrijk","Koud contact",0,"verloren","Y",30,null,"",0]
 ];
 
 function slug(s){
   return s.toLowerCase()
-    .replace(/[àáâä]/g,"a").replace(/[éèêë]/g,"e").replace(/[ïî]/g,"i").replace(/[öô]/g,"o").replace(/[üû]/g,"u")
+    .replace(/[àáâä]/g,"a").replace(/[éèêë]/g,"e").replace(/[ïî]/g,"i")
+    .replace(/[öô]/g,"o").replace(/[üû]/g,"u")
     .replace(/&/g,"en").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 }
 var LEADS = RAW.map(function(r,i){
-  var voor = r[2].split(" ")[0].toLowerCase();
-  var achter = r[2].split(" ").slice(-1)[0].toLowerCase();
+  var deel = r[2].split(" ");
   return {
     id:r[0], bedrijf:r[1], contact:r[2], functie:r[3], stad:r[4], bron:r[5],
-    score:r[6], waarde:r[7], fase:r[8], eigenaar:r[9], dagen:r[10], stap:r[11],
-    type:r[12], followup:(r[13]===null?"":isoDay(r[13])),
-    email:voor.charAt(0)+"."+achter.replace(/[^a-z]/g,"")+"@"+slug(r[1])+".be",
+    formulier:!!r[6], status:r[7], eigenaar:r[8], dagen:r[9],
+    followup:(r[10]===null?"":isoDay(r[10])), stap:r[11], ster:!!r[12],
+    email:deel[0].charAt(0).toLowerCase()+"."+deel[deel.length-1].toLowerCase().replace(/[^a-z]/g,"")+"@"+slug(r[1])+".be",
     tel:"+32 4"+(70+(i%9))+" "+(10+(i*7)%89)+" "+(10+(i*13)%89)+" "+(10+(i*19)%89)
   };
 });
 
-var BRONNEN = LEADS.map(function(l){return l.bron;}).filter(function(v,i,a){return a.indexOf(v)===i;}).sort();
-
-function isOpen(l){ return OPEN_FASES.indexOf(l.fase)>-1; }
-var VIEWS = [
-  {key:"alle",      label:"Alle leads",        test:function(){return true;}},
-  {key:"open",      label:"Open",              test:isOpen},
-  {key:"mijn",      label:"Mijn leads",        test:function(l){return l.eigenaar===MIJ;}},
-  {key:"vandaag",   label:"Follow-up vandaag", test:function(l){return isOpen(l) && l.followup && l.fuDagen<=0;}},
-  {key:"hot",       label:"Hot · score ≥ 75",  test:function(l){return l.score>=75 && isOpen(l);}},
-  {key:"stil",      label:"Te lang stil ≥ 7d", test:function(l){return l.dagen>=7 && isOpen(l);}},
-  {key:"formulier", label:"Contactformulier",  test:function(l){return l.type==="Contactformulier";}},
-  {key:"gewonnen",  label:"Gewonnen",          test:function(l){return l.fase==="gewonnen";}}
-];
-
-/* KPI-reeksen: 13 rollende weken voorbeelddata */
-var SERIES = {
-  pipeline:[188,196,191,205,214,209,223,231,228,242,251,247,268],
-  nieuwe:  [9,12,10,14,11,15,13,18,16,14,19,17,21],
-  ratio:   [31,29,34,33,36,35,38,37,41,40,39,43,44],
-  reactie: [7.4,6.9,7.1,6.2,5.8,6.0,5.1,4.8,4.9,4.4,4.2,4.3,3.9],
-  stil:    [11,10,12,9,10,8,9,7,8,6,7,6,5]
-};
-
-/* ---------------- state ---------------- */
+/* ================= toestand ================= */
 var state = {
-  view:"alle",
-  mode:"lijst",
-  q:"",
-  fase:null,
-  type:null,
-  bron:null,
-  eigenaar:null,
-  sort:{key:"score",dir:"desc"},
-  selected:LEADS[0].id,
-  sel:Object.create(null)
+  bak:"mijn", mode:"lijst", q:"", status:null, eigenaar:null,
+  sort:{key:"fuDagen",dir:"asc"}, selected:null
 };
-var dragId=null, dl=null;
-var overrides = Object.create(null);   /* id -> {fase, eigenaar, notitie, stap} */
-var db = null;
+var overrides = Object.create(null);
+var db=null, room=null, dl=null, peers=[], dragId=null, me=null;
 
-function lead(id){ for(var i=0;i<LEADS.length;i++){ if(LEADS[i].id===id) return LEADS[i]; } return null; }
+function findLead(id){ for(var i=0;i<LEADS.length;i++) if(LEADS[i].id===id) return LEADS[i]; return null; }
 function merged(l){
-  var o = overrides[l.id] || {};
-  var m = {};
+  var o = overrides[l.id]||{}, m={};
   for(var k in l) m[k]=l[k];
-  if(o.fase) m.fase=o.fase;
-  if(o.eigenaar) m.eigenaar=o.eigenaar;
-  if(o.stap) m.stap=o.stap;
-  if(typeof o.dagen==="number") m.dagen=o.dagen;
+  if(o.status) m.status=o.status;
+  if(typeof o.eigenaar==="string") m.eigenaar=o.eigenaar;
+  if(typeof o.stap==="string") m.stap=o.stap;
   if(typeof o.followup==="string") m.followup=o.followup;
-  m.notitie = o.notitie||"";
-  m.gewijzigd = o.gewijzigd||"";
+  if(typeof o.dagen==="number") m.dagen=o.dagen;
+  if(typeof o.ster==="boolean") m.ster=o.ster;
+  m.log = o.log||[];
   m.fuDagen = m.followup ? dayDiff(m.followup) : 9999;
   return m;
 }
 function all(){ return LEADS.map(merged); }
-
-/* ---------------- format ---------------- */
-var nf = new Intl.NumberFormat("nl-BE");
-function euro(n){
-  if(n>=1000000) return "€ "+(n/1000000).toFixed(1).replace(".",",")+" mln";
-  if(n>=10000) return "€ "+nf.format(Math.round(n/1000))+"k";
-  return "€ "+nf.format(n);
-}
-function euroFull(n){ return "€ "+nf.format(n); }
-function ago(d){ return d===0?"vandaag":d===1?"1 d":d+" d"; }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
-function faseLabel(k){ for(var i=0;i<FASES.length;i++){ if(FASES[i].key===k) return FASES[i].label; } return k; }
-function faseIndex(k){ for(var i=0;i<FASES.length;i++){ if(FASES[i].key===k) return i; } return 0; }
 
-/* ---------------- sparkline ---------------- */
-function spark(vals,w,h){
-  w=w||96; h=h||26;
-  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
-  var span=(max-min)||1, pad=3;
-  var pts=vals.map(function(v,i){
-    var x=(i/(vals.length-1))*(w-2)+1;
-    var y=h-pad-((v-min)/span)*(h-pad*2);
-    return [x,y];
-  });
-  var line=pts.map(function(p,i){return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1);}).join(" ");
-  var area=line+" L"+pts[pts.length-1][0].toFixed(1)+" "+h+" L"+pts[0][0].toFixed(1)+" "+h+" Z";
-  var last=pts[pts.length-1];
-  return '<svg class="spark" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Verloop laatste 13 weken">'+
-    '<path d="'+area+'" fill="currentColor" fill-opacity=".10"/>'+
-    '<path d="'+line+'" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'+
-    '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.6" fill="currentColor"/>'+
-  '</svg>';
+/* ================= werkbakken ================= */
+var BAKKEN = [
+  {key:"vrij",    label:"Niet toegewezen", hint:"pak er een op",       alert:true,
+   test:function(l){ return !l.eigenaar && isOpen(l); }},
+  {key:"vandaag", label:"Vandaag te doen",  hint:"jouw follow-ups",     alert:true,
+   test:function(l){ return isOpen(l) && l.eigenaar===meId() && l.followup && l.fuDagen<=0; }},
+  {key:"mijn",    label:"Mijn leads",       hint:"alles van jou",       alert:false,
+   test:function(l){ return isOpen(l) && l.eigenaar===meId(); }},
+  {key:"stil",    label:"Te lang stil",     hint:"7 dagen geen contact",alert:true,
+   test:function(l){ return isOpen(l) && l.dagen>=7; }}
+];
+var EXTRA = [
+  {key:"alles",   label:"Alle open leads", test:isOpen},
+  {key:"archief", label:"Afgerond",        test:function(l){ return !isOpen(l); }}
+];
+function bak(k){
+  var lijst=BAKKEN.concat(EXTRA);
+  for(var i=0;i<lijst.length;i++) if(lijst[i].key===k) return lijst[i];
+  return EXTRA[0];
+}
+function meId(){ return me?me.id:"__none__"; }
+
+/* ================= wijzigen ================= */
+function save(id){
+  var o=overrides[id];
+  if(!db||!o) return;
+  var clean={};
+  for(var k in o) if(k.charAt(0)!=="_") clean[k]=o[k];
+  db.doc("leads/"+id).set(clean).catch(function(){});
+}
+function patch(id,data,logtekst){
+  var o=overrides[id]||(overrides[id]={});
+  for(var k in data) o[k]=data[k];
+  if(logtekst){
+    o.log=(o.log||[]).slice(0,7);
+    o.log.unshift({t:logtekst,who:me?me.naam:"Iemand",at:nu()});
+  }
+  save(id);
+  render();
 }
 
-/* ---------------- afgeleide cijfers ---------------- */
-function stats(){
-  var L=all(), s={openWaarde:0,perFase:{},nieuweWeek:0,gewonnen:0,verloren:0,stil:0,gewonnenWaarde:0};
-  FASES.forEach(function(f){ s.perFase[f.key]={n:0,waarde:0}; });
-  L.forEach(function(l){
-    s.perFase[l.fase].n++; s.perFase[l.fase].waarde+=l.waarde;
-    if(OPEN_FASES.indexOf(l.fase)>-1){
-      s.openWaarde+=l.waarde;
-      if(l.dagen>=7) s.stil++;
-    }
-    if(l.fase==="nieuw" && l.dagen<=7) s.nieuweWeek++;
-    if(l.fase==="gewonnen"){ s.gewonnen++; s.gewonnenWaarde+=l.waarde; }
-    if(l.fase==="verloren") s.verloren++;
-  });
-  s.ratio = s.gewonnen+s.verloren ? Math.round(s.gewonnen/(s.gewonnen+s.verloren)*100) : 0;
-  return s;
+/* ================= acties ================= */
+function act(kind,id){
+  var l=merged(findLead(id)); if(!l) return;
+  if(kind==="next"){
+    var i=sIndex(l.status);
+    if(i<4) patch(id,{status:STATUS[i+1].key,dagen:0},"Status → "+label(STATUS[i+1].key));
+  }
+  else if(kind==="won")   patch(id,{status:"gewonnen",dagen:0,followup:""},"Gewonnen");
+  else if(kind==="lost")  patch(id,{status:"verloren",dagen:0,followup:""},"Verloren");
+  else if(kind==="claim"){
+    if(!me) { flashNote("Kies eerst wie je bent."); return; }
+    patch(id,{eigenaar:me.id,dagen:0,followup:l.followup||isoDay(0)},"Overgenomen door "+me.naam);
+  }
+  else if(kind==="star")  patch(id,{ster:!l.ster});
+  else if(kind==="done")  patch(id,{dagen:0,followup:isoDay(7)},"Contact gehad");
+  else if(kind==="call"){ patch(id,{dagen:0},"Gebeld"); window.location.href="tel:"+l.tel.replace(/\s/g,""); }
+  else if(kind==="mail"){ patch(id,{dagen:0},"Gemaild"); window.location.href="mailto:"+l.email+"?subject="+encodeURIComponent(l.bedrijf+" — opvolging"); }
 }
 
-/* ---------------- render: hero meter ---------------- */
-function renderMeter(){
-  var s=stats();
-  document.getElementById("pipeTotal").textContent=euroFull(s.openWaarde);
-  document.getElementById("mLeads").textContent=LEADS.length;
-
-  var mix=[14,30,58,78,100];
-  var tones=mix.map(function(m){ return m===100?"var(--ink)":"color-mix(in srgb,var(--ink) "+m+"%,var(--surface))"; });
-  var inks =mix.map(function(m){ return m>=58?"var(--surface)":"var(--ink)"; });
-  var bar=document.getElementById("meterBar"), leg=document.getElementById("meterLegend");
-  bar.innerHTML=""; leg.innerHTML="";
-  OPEN_FASES.forEach(function(k,i){
-    var d=s.perFase[k], pct=s.openWaarde?d.waarde/s.openWaarde*100:0;
-    var seg=document.createElement("div");
-    seg.className="meter-seg";
-    seg.style.flex=pct+" 0 0";
-    seg.style.background=tones[i];
-    seg.style.color=inks[i];
-    seg.title=faseLabel(k)+" · "+euroFull(d.waarde)+" · "+d.n+" leads";
-    if(pct>11) seg.innerHTML='<span>'+Math.round(pct)+'%</span>';
-    bar.appendChild(seg);
-
-    var row=document.createElement("div");
-    row.className="leg";
-    row.innerHTML='<i style="background:'+tones[i]+'"></i>'+esc(faseLabel(k))+' <b class="num">'+euro(d.waarde)+'</b>';
-    leg.appendChild(row);
-  });
-}
-
-/* ---------------- render: kpi's ---------------- */
-function renderKpis(){
-  var s=stats();
-  var cards=[
-    {label:"Open pipeline",     val:euro(s.openWaarde),      delta:"+12,4% MoM", dir:"up",   series:SERIES.pipeline},
-    {label:"Nieuw deze week",   val:String(s.nieuweWeek),    delta:"+4 vs. vorige week", dir:"up", series:SERIES.nieuwe},
-    {label:"Winratio",          val:s.ratio+"%",             delta:"+5 pp kwartaal", dir:"up", series:SERIES.ratio},
-    {label:"Gem. reactietijd",  val:"3,9 u",                 delta:"−0,4 u", dir:"down", series:SERIES.reactie},
-    {label:"Te lang stil",      val:String(s.stil),          delta:"−1 vs. vorige week", dir:"down", series:SERIES.stil}
-  ];
-  document.getElementById("kpis").innerHTML=cards.map(function(c){
-    return '<article class="kpi">'+
-      '<span class="eyebrow">'+esc(c.label)+'</span>'+
-      '<div class="kpi-val num">'+esc(c.val)+'</div>'+
-      '<div class="kpi-foot"><span class="delta '+c.dir+'">'+esc(c.delta)+'</span>'+spark(c.series,96,26)+'</div>'+
-    '</article>';
-  }).join("");
-}
-
-/* ---------------- render: rail ---------------- */
-function renderRail(){
-  var L=all();
-
-  document.getElementById("views").innerHTML=VIEWS.map(function(v){
-    var n=L.filter(v.test).length;
-    return '<button class="view-btn" type="button" data-view="'+v.key+'" aria-pressed="'+(state.view===v.key)+'">'+
-      '<span class="tick"></span>'+esc(v.label)+'<span class="cnt num">'+n+'</span></button>';
-  }).join("");
-
-  document.getElementById("bronChips").innerHTML=BRONNEN.map(function(b){
-    return '<button class="chip" type="button" data-bron="'+esc(b)+'" aria-pressed="'+(state.bron===b)+'">'+esc(b)+'</button>';
-  }).join("");
-
-  document.getElementById("owners").innerHTML=Object.keys(TEAM).map(function(k){
-    var n=L.filter(function(l){return l.eigenaar===k;}).length;
-    var on=state.eigenaar===k;
-    return '<button class="owner-btn" type="button" data-owner="'+k+'" aria-pressed="'+on+'">'+
-      '<span class="avatar'+(on?" filled":"")+'">'+k+'</span>'+esc(TEAM[k].naam)+
-      '<span class="cnt num">'+n+'</span></button>';
-  }).join("");
-
-  var s=stats();
-  var maxN=Math.max.apply(null,FASES.map(function(f){return s.perFase[f.key].n;}))||1;
-  var tone=[12,28,46,64,88].map(function(m){ return "color-mix(in srgb,var(--ink) "+m+"%,var(--surface))"; })
-            .concat(["var(--ink)","var(--line-2)"]);
-  document.getElementById("funnel").innerHTML=FASES.map(function(f,i){
-    var d=s.perFase[f.key];
-    return '<div class="fn-row">'+
-      '<span class="fn-label">'+esc(f.label)+'</span>'+
-      '<span class="fn-count num">'+d.n+' · '+euro(d.waarde)+'</span>'+
-      '<span class="fn-track"><span class="fn-fill" style="width:'+(d.n/maxN*100).toFixed(1)+'%;background:'+tone[i]+'"></span></span>'+
-    '</div>';
-  }).join("");
-}
-
-/* ---------------- render: type- en fase-filter ---------------- */
-var TYPES=["Lead","Contactformulier"];
-function renderTypeSeg(){
-  var L=all();
-  var html='<button type="button" data-type="" aria-pressed="'+(state.type===null)+'">Alles <span class="num">'+L.length+'</span></button>';
-  html+=TYPES.map(function(t){
-    var n=L.filter(function(l){return l.type===t;}).length;
-    return '<button type="button" data-type="'+esc(t)+'" aria-pressed="'+(state.type===t)+'">'+esc(t)+' <span class="num">'+n+'</span></button>';
-  }).join("");
-  document.getElementById("typeSeg").innerHTML=html;
-}
-
-function renderSeg(){
-  var s=stats();
-  var html='<button type="button" data-fase="" aria-pressed="'+(state.fase===null)+'">Alle</button>';
-  html+=FASES.map(function(f){
-    return '<button type="button" data-fase="'+f.key+'" aria-pressed="'+(state.fase===f.key)+'">'+esc(f.label)+' <span class="num">'+s.perFase[f.key].n+'</span></button>';
-  }).join("");
-  document.getElementById("faseSeg").innerHTML=html;
-}
-
-/* ---------------- filter + sort ---------------- */
-function visible(ignoreFase){
-  var v=VIEWS.filter(function(x){return x.key===state.view;})[0]||VIEWS[0];
-  var q=state.q.trim().toLowerCase();
+/* ================= filteren ================= */
+function visible(negeerStatus){
+  var b=bak(state.bak), q=state.q.trim().toLowerCase();
   var rows=all().filter(function(l){
-    if(!v.test(l)) return false;
-    if(!ignoreFase && state.fase && l.fase!==state.fase) return false;
-    if(state.type && l.type!==state.type) return false;
-    if(state.bron && l.bron!==state.bron) return false;
+    if(!b.test(l)) return false;
+    if(!negeerStatus && state.status && l.status!==state.status) return false;
     if(state.eigenaar && l.eigenaar!==state.eigenaar) return false;
-    if(q){
-      var hay=(l.bedrijf+" "+l.contact+" "+l.stad+" "+l.bron+" "+l.id+" "+l.stap+" "+l.functie).toLowerCase();
-      if(hay.indexOf(q)===-1) return false;
-    }
+    if(q && (l.bedrijf+" "+l.contact+" "+l.stad+" "+l.bron+" "+l.stap+" "+l.id).toLowerCase().indexOf(q)===-1) return false;
     return true;
   });
   var k=state.sort.key, dir=state.sort.dir==="asc"?1:-1;
-  rows.sort(function(a,b){
-    var x=a[k], y=b[k];
-    if(k==="fase"){ x=faseIndex(a.fase); y=faseIndex(b.fase); }
-    if(typeof x==="string") return x.localeCompare(y,"nl")*dir;
+  rows.sort(function(a,b2){
+    if(a.ster!==b2.ster) return a.ster?-1:1;
+    var x=a[k], y=b2[k];
+    if(k==="status"){ x=sIndex(a.status); y=sIndex(b2.status); }
+    if(typeof x==="string") return String(x).localeCompare(String(y),"nl")*dir;
     return (x-y)*dir;
   });
   return rows;
 }
 
-/* ---------------- render: tabel ---------------- */
-function sev(l){
-  if(OPEN_FASES.indexOf(l.fase)===-1) return "";
-  if(l.score>=75 || l.dagen>=7) return "s3";
-  if(l.score>=55) return "s2";
-  return "s1";
+/* ================= presence ================= */
+function watchers(id){
+  return peers.filter(function(p){
+    return !p.isMe && p.kind!=="agent" && p.presence && p.presence.leadId===id;
+  });
+}
+function pushPresence(){
+  if(!room) return;
+  room.presence({naam:me?me.naam:"Gast", init:me?me.id:"?", leadId:state.selected||""}).catch(function(){});
+}
+function renderPresence(){
+  var el=document.getElementById("presence");
+  var live=peers.filter(function(p){ return p.kind!=="agent"; });
+  if(!room || live.length<2){ el.hidden=true; return; }
+  el.hidden=false;
+  el.innerHTML='<span class="eyebrow">Nu online</span><span class="stack">'+
+    live.map(function(p){
+      var n=(p.presence&&p.presence.naam)||"Gast";
+      return '<span class="avatar sm'+(p.isMe?" filled":"")+'" title="'+esc(n)+(p.isMe?" (jij)":"")+'">'+
+        esc(((p.presence&&p.presence.init)||n.charAt(0)).toString().slice(0,2))+'</span>';
+    }).join("")+'</span>';
+}
+
+/* ================= tekenen ================= */
+function avatar(id,extra){
+  if(!id) return '<span class="avatar empty '+(extra||"")+'" title="Nog niemand">–</span>';
+  return '<span class="avatar '+(extra||"")+(id===meId()?" filled":"")+'" title="'+esc(naam(id))+'">'+esc(id)+'</span>';
 }
 function fuCell(l){
   var n=l.followup?dayDiff(l.followup):null;
   var cls=n===null?"none":(n<0?"over":(n===0?"due":""));
-  return '<label class="fu '+cls+'" title="Follow-updatum instellen">'+esc(fuLabel(l.followup))+
-    '<input type="date" data-fu="'+l.id+'" value="'+(l.followup||"")+'" aria-label="Follow-up voor '+esc(l.bedrijf)+'"></label>';
+  return '<label class="fu '+cls+'" title="Datum kiezen">'+esc(fuLabel(l.followup))+
+    '<input type="date" data-fu="'+l.id+'" value="'+(l.followup||"")+'" aria-label="Volgende stap voor '+esc(l.bedrijf)+'"></label>';
 }
-function selIds(){ return Object.keys(state.sel).filter(function(id){return state.sel[id];}); }
+function statusPill(l){ return '<span class="pill s-'+l.status+'">'+esc(label(l.status))+'</span>'; }
 
-function renderTable(){
+function renderWho(){
+  var el=document.getElementById("who");
+  el.innerHTML = me
+    ? '<button class="btn btn-sm" id="meBtn" type="button">'+avatar(me.id,"sm")+' '+esc(me.naam)+'</button>'
+    : '';
+  var ident=document.getElementById("identify");
+  ident.hidden=!!me;
+  if(!me){
+    document.getElementById("identifyBtns").innerHTML=
+      team.map(function(m){ return '<button class="btn btn-lg" type="button" data-me="'+m.id+'">'+esc(m.naam)+'</button>'; }).join("")+
+      '<button class="btn btn-lg" type="button" data-addlid="1">+ Iemand toevoegen</button>';
+  }
+}
+
+function renderQueues(){
+  var L=all();
+  document.getElementById("queues").innerHTML=BAKKEN.map(function(b){
+    var n=L.filter(b.test).length;
+    return '<button class="queue'+(b.alert&&n>0?" alert":"")+'" type="button" data-bak="'+b.key+'" aria-pressed="'+(state.bak===b.key)+'">'+
+      '<span class="queue-n num">'+n+'</span>'+
+      '<span class="queue-l">'+esc(b.label)+'</span>'+
+      '<span class="queue-h">'+esc(b.hint)+'</span></button>';
+  }).join("");
+}
+
+function renderFilters(){
+  var L=all(), f=document.getElementById("filters");
+  var html='<div class="seg">'+EXTRA.map(function(b){
+    return '<button type="button" data-bak="'+b.key+'" aria-pressed="'+(state.bak===b.key)+'">'+esc(b.label)+'</button>';
+  }).join("")+'</div>';
+  html+='<button class="chip" type="button" data-status="" aria-pressed="'+(state.status===null)+'">Elke status</button>';
+  html+=STATUS.map(function(s){
+    var n=L.filter(function(l){return l.status===s.key;}).length;
+    if(!n) return "";
+    return '<button class="chip" type="button" data-status="'+s.key+'" aria-pressed="'+(state.status===s.key)+'">'+esc(s.label)+' <span class="num" style="opacity:.6">'+n+'</span></button>';
+  }).join("");
+  html+='<span style="width:1px;height:20px;background:var(--line)"></span>';
+  html+=team.map(function(m){
+    var n=L.filter(function(l){return l.eigenaar===m.id && isOpen(l);}).length;
+    return '<button class="chip" type="button" data-owner="'+m.id+'" aria-pressed="'+(state.eigenaar===m.id)+'">'+
+      '<span class="avatar sm">'+esc(m.id)+'</span>'+esc(m.naam)+' <span class="num" style="opacity:.6">'+n+'</span></button>';
+  }).join("");
+  html+='<span class="count" id="count"></span>';
+  f.innerHTML=html;
+}
+
+function rowActs(l){
+  var acts='';
+  if(!l.eigenaar) acts+='<button class="iconbtn" type="button" data-act="claim" data-id="'+l.id+'" title="Ik neem deze" aria-label="Ik neem deze">+</button>';
+  acts+='<button class="iconbtn" type="button" data-act="call" data-id="'+l.id+'" title="Bellen" aria-label="Bellen">☎</button>';
+  acts+='<button class="iconbtn" type="button" data-act="next" data-id="'+l.id+'" title="Status vooruit" aria-label="Status vooruit">→</button>';
+  acts+='<button class="iconbtn" type="button" data-act="won" data-id="'+l.id+'" title="Gewonnen" aria-label="Gewonnen">✓</button>';
+  acts+='<button class="iconbtn" type="button" data-act="lost" data-id="'+l.id+'" title="Verloren" aria-label="Verloren">✕</button>';
+  return acts;
+}
+
+function renderList(){
   var rows=visible();
-  var tb=document.getElementById("tbody");
-  document.getElementById("rowCount").textContent=rows.length+" van "+LEADS.length+" leads";
   document.getElementById("empty").hidden=rows.length>0;
+  var c=document.getElementById("count");
+  if(c) c.textContent=rows.length+" van "+LEADS.length;
 
-  tb.innerHTML=rows.map(function(l){
-    var sel=l.id===state.selected;
-    return '<tr data-id="'+l.id+'" aria-selected="'+sel+'" tabindex="-1">'+
-      '<td class="rail-cell"><span class="sev '+sev(l)+'"></span></td>'+
-      '<td class="cb-cell"><input type="checkbox" class="cb" data-pick="'+l.id+'"'+(state.sel[l.id]?' checked':'')+' aria-label="Selecteer '+esc(l.bedrijf)+'"></td>'+
-      '<td><div class="co">'+esc(l.bedrijf)+'</div><div class="co-sub">'+esc(l.contact)+' · '+esc(l.stad)+'</div></td>'+
-      '<td><span class="src">'+esc(l.bron)+'</span></td>'+
-      '<td><span class="score"><span class="score-track"><span class="score-fill" style="width:'+l.score+'%"></span></span><b>'+l.score+'</b></span></td>'+
-      '<td class="val">'+euroFull(l.waarde)+'</td>'+
-      '<td><span class="pill f-'+l.fase+'">'+esc(faseLabel(l.fase))+'</span></td>'+
-      '<td><span class="avatar" title="'+esc(TEAM[l.eigenaar].naam)+'">'+l.eigenaar+'</span></td>'+
-      '<td><span class="ago'+(l.dagen>=7&&OPEN_FASES.indexOf(l.fase)>-1?" stale":"")+'">'+ago(l.dagen)+'</span></td>'+
-      '<td>'+fuCell(l)+'</td>'+
-      '<td><div class="next" title="'+esc(l.stap)+'">'+esc(l.stap)+'</div></td>'+
-      '<td><div class="rowacts">'+
-        '<button class="iconbtn" type="button" data-act="next" data-id="'+l.id+'" title="Fase vooruit" aria-label="Fase vooruit">→</button>'+
-        '<button class="iconbtn" type="button" data-act="won" data-id="'+l.id+'" title="Markeer gewonnen" aria-label="Markeer gewonnen">✓</button>'+
-        '<button class="iconbtn" type="button" data-act="lost" data-id="'+l.id+'" title="Markeer verloren" aria-label="Markeer verloren">✕</button>'+
-      '</div></td>'+
+  document.getElementById("tbody").innerHTML=rows.map(function(l){
+    var kijkers=watchers(l.id);
+    return '<tr data-id="'+l.id+'" aria-selected="'+(l.id===state.selected)+'">'+
+      '<td class="star-cell"><button class="star'+(l.ster?" on":"")+'" type="button" data-act="star" data-id="'+l.id+'" aria-label="Markeer als belangrijk" aria-pressed="'+l.ster+'">'+(l.ster?"★":"☆")+'</button></td>'+
+      '<td><div class="co">'+esc(l.bedrijf)+
+        (l.formulier?' <span class="tag">formulier</span>':'')+
+        (kijkers.length?' <span class="watching">'+esc((kijkers[0].presence.naam||"Collega").split(" ")[0])+' kijkt hier</span>':'')+
+        '</div><div class="co-sub">'+esc(l.contact)+' · '+esc(l.stad)+' · '+esc(l.bron)+'</div></td>'+
+      '<td>'+statusPill(l)+'</td>'+
+      '<td>'+avatar(l.eigenaar)+'</td>'+
+      '<td><div class="next-wrap">'+
+        '<span class="next'+(l.stap?"":" none")+'" title="'+esc(l.stap||"")+'">'+esc(l.stap||"nog geen volgende stap")+'</span>'+
+        fuCell(l)+'</div></td>'+
+      '<td><div class="rowacts">'+rowActs(l)+'</div></td>'+
     '</tr>';
   }).join("");
-
-  var ids=rows.map(function(r){return r.id;});
-  var picked=ids.filter(function(id){return state.sel[id];}).length;
-  var cbAll=document.getElementById("cbAll");
-  if(cbAll){ cbAll.checked=picked>0&&picked===ids.length; cbAll.indeterminate=picked>0&&picked<ids.length; }
 
   document.querySelectorAll("thead th[data-sort]").forEach(function(th){
     var on=th.getAttribute("data-sort")===state.sort.key;
@@ -1072,306 +704,279 @@ function renderTable(){
   });
 }
 
-/* ---------------- render: pipelinebord ---------------- */
-function card(l){
-  return '<article class="card" draggable="true" data-id="'+l.id+'" aria-selected="'+(l.id===state.selected)+'">'+
-    '<div class="card-top"><div><div class="card-co">'+esc(l.bedrijf)+'</div>'+
-      '<div class="card-sub">'+esc(l.contact)+'</div></div>'+
-      '<span class="avatar" title="'+esc(TEAM[l.eigenaar].naam)+'">'+l.eigenaar+'</span></div>'+
-    '<div class="card-foot"><span class="val">'+euroFull(l.waarde)+'</span>'+
-      '<span class="score"><span class="score-track"><span class="score-fill" style="width:'+l.score+'%"></span></span><b>'+l.score+'</b></span>'+
-      '<span class="card-acts"><button class="iconbtn" type="button" data-act="next" data-id="'+l.id+'" title="Fase vooruit" aria-label="Fase vooruit">→</button></span></div>'+
-    '<div class="card-foot">'+fuCell(l)+'</div>'+
-  '</article>';
-}
 function renderBoard(){
-  var rows=visible(true), byFase={};
-  BOARD_FASES.forEach(function(k){ byFase[k]=[]; });
-  rows.forEach(function(l){ if(byFase[l.fase]) byFase[l.fase].push(l); });
-  document.getElementById("boardView").innerHTML=BOARD_FASES.map(function(k){
-    var list=byFase[k];
-    var som=list.reduce(function(a,b){return a+b.waarde;},0);
-    return '<section class="col" data-fase="'+k+'">'+
-      '<div class="col-head"><span class="eyebrow">'+esc(faseLabel(k))+'</span><b class="num">'+list.length+'</b></div>'+
-      '<div class="col-sum">'+euro(som)+'</div>'+
-      '<div class="col-body">'+(list.length?list.map(card).join(""):'<div class="board-empty">Sleep een lead hierheen</div>')+'</div>'+
+  var rows=visible(true), per={};
+  BOARD.forEach(function(k){ per[k]=[]; });
+  rows.forEach(function(l){ if(per[l.status]) per[l.status].push(l); });
+  var c=document.getElementById("count");
+  if(c) c.textContent=rows.length+" van "+LEADS.length;
+
+  document.getElementById("boardView").innerHTML=BOARD.map(function(k){
+    var lijst=per[k];
+    return '<section class="col" data-status="'+k+'">'+
+      '<div class="col-head"><span class="eyebrow">'+esc(label(k))+'</span><b class="num">'+lijst.length+'</b></div>'+
+      '<div class="col-body">'+(lijst.length?lijst.map(function(l){
+        var kijkers=watchers(l.id);
+        return '<article class="card" draggable="true" data-id="'+l.id+'" aria-selected="'+(l.id===state.selected)+'">'+
+          '<div class="card-top"><div><div class="card-co">'+esc(l.bedrijf)+'</div>'+
+            '<div class="card-sub">'+esc(l.contact)+'</div></div>'+avatar(l.eigenaar,"sm")+'</div>'+
+          (kijkers.length?'<span class="watching">'+esc((kijkers[0].presence.naam||"Collega").split(" ")[0])+' kijkt hier</span>':'')+
+          '<div class="card-foot">'+fuCell(l)+
+            '<span class="card-acts">'+
+              (l.eigenaar?'':'<button class="iconbtn" type="button" data-act="claim" data-id="'+l.id+'" title="Ik neem deze" aria-label="Ik neem deze">+</button>')+
+              '<button class="iconbtn" type="button" data-act="next" data-id="'+l.id+'" title="Status vooruit" aria-label="Status vooruit">→</button>'+
+            '</span></div>'+
+        '</article>';
+      }).join(""):'<div class="board-empty">Sleep een lead hierheen</div>')+'</div>'+
     '</section>';
   }).join("");
 }
 
-/* ---------------- render: bulkbalk ---------------- */
-function renderBulk(){
-  var ids=selIds(), bar=document.getElementById("bulkBar");
-  bar.hidden = ids.length===0 || state.mode!=="lijst";
-  if(bar.hidden){ bar.innerHTML=""; return; }
-  var waarde=all().filter(function(l){return state.sel[l.id];}).reduce(function(a,b){return a+b.waarde;},0);
-  bar.innerHTML=
-    '<span class="bulk-count">'+ids.length+' geselecteerd · '+euro(waarde)+'</span>'+
-    '<select id="bulkFase" aria-label="Fase voor selectie"><option value="">Fase zetten…</option>'+
-      FASES.map(function(f){return '<option value="'+f.key+'">'+esc(f.label)+'</option>';}).join("")+'</select>'+
-    '<select id="bulkOwner" aria-label="Selectie toewijzen"><option value="">Toewijzen aan…</option>'+
-      Object.keys(TEAM).map(function(k){return '<option value="'+k+'">'+esc(TEAM[k].naam)+'</option>';}).join("")+'</select>'+
-    '<span class="divider"></span><span class="bulk-count">Follow-up</span>'+
-    '<button class="btn btn-sm" type="button" data-bulkfu="0">Vandaag</button>'+
-    '<button class="btn btn-sm" type="button" data-bulkfu="3">+3 d</button>'+
-    '<button class="btn btn-sm" type="button" data-bulkfu="7">+7 d</button>'+
-    '<span class="spacer"></span>'+
-    '<button class="btn btn-sm" type="button" id="bulkExport">Exporteren</button>'+
-    '<button class="btn btn-sm" type="button" id="bulkClear">Wis selectie</button>';
-}
-
-/* ---------------- export ---------------- */
-function flash(btn,msg){
-  if(!btn) return;
-  var old=btn.innerHTML; btn.disabled=true; btn.textContent=msg;
-  setTimeout(function(){ btn.innerHTML=old; btn.disabled=false; },1700);
-}
-function csv(rows){
-  var head=["ID","Bedrijf","Contact","Functie","Stad","Type","Bron","Score","Waarde","Fase","Eigenaar","Laatste contact (d)","Follow-up","Volgende stap","Notitie"];
-  var lines=[head.join(";")];
-  rows.forEach(function(l){
-    lines.push([l.id,l.bedrijf,l.contact,l.functie,l.stad,l.type,l.bron,l.score,l.waarde,
-                faseLabel(l.fase),TEAM[l.eigenaar].naam,l.dagen,l.followup||"",l.stap,l.notitie||""]
-      .map(function(v){ v=String(v).replace(/"/g,'""'); return /[";\r\n]/.test(v)?'"'+v+'"':v; }).join(";"));
-  });
-  return "\ufeff"+lines.join("\r\n");
-}
-function exportRows(rows,btn){
-  if(!rows.length){ flash(btn,"Niets geselecteerd"); return; }
-  var data=csv(rows), naam="leads-"+isoDay(0)+".csv";
-  if(dl){
-    dl.save({filename:naam,data:data}).then(function(){ flash(btn,"Geëxporteerd ✓"); },
-      function(err){ flash(btn, err&&err.code==="declined" ? "Geannuleerd" : "Export mislukt"); });
-    return;
-  }
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(data).then(function(){ flash(btn,"Naar klembord ✓"); },
-      function(){ flash(btn,"Kopiëren mislukt"); });
-    return;
-  }
-  flash(btn,"Export hier niet mogelijk");
-}
-
-/* ---------------- render: detail ---------------- */
 function renderDetail(){
   var el=document.getElementById("detail");
-  var l=state.selected?merged(lead(state.selected)||LEADS[0]):null;
+  var l=state.selected?merged(findLead(state.selected)):null;
   if(!l){
-    el.innerHTML='<div class="detail-empty">Selecteer een lead in de lijst om door te schakelen.</div>';
+    el.innerHTML='<div class="detail-empty">Klik een lead aan.<br>Alles wat je daarna doet, gaat over die lead.</div>';
     return;
   }
-  var idx=faseIndex(l.fase);
-  var steps=FASES.slice(0,6).map(function(f,i){
-    var cls=i<idx?"done":(i===idx?"current":"");
-    if(l.fase==="verloren") cls=i<=1?"done":"";
-    return '<div class="step-row '+cls+'"><span class="idx">'+(i+1)+'</span>'+esc(f.label)+'</div>';
+  var idx=sIndex(l.status);
+  var steps=STATUS.slice(0,5).map(function(s,i){
+    var cls=i<idx?"done":(i===idx?"now":"");
+    return '<button class="step '+cls+'" type="button" data-status-set="'+s.key+'" data-id="'+l.id+'">'+
+      '<span class="idx">'+(i+1)+'</span>'+esc(s.label)+'<span class="kbd">'+(i+1)+'</span></button>';
   }).join("");
 
-  var tl=[
-    {t:l.stap,d:"Volgende stap · door "+TEAM[l.eigenaar].naam},
-    {t:"Fase gezet op "+faseLabel(l.fase),d:l.gewijzigd?("bijgewerkt "+l.gewijzigd):("laatste contact "+ago(l.dagen)+" geleden")},
-    {t:"Binnengekomen via "+l.bron,d:"lead "+l.id+" · score "+l.score+"/100"}
-  ].map(function(x,i){
-    return '<div class="tl"><i></i><div><div class="tl-t">'+esc(x.t)+'</div><div class="tl-d">'+esc(x.d)+'</div></div></div>';
-  }).join("");
+  var log=(l.log&&l.log.length?l.log:[{t:"Binnengekomen via "+l.bron,who:"Systeem",at:l.dagen+" d geleden"}])
+    .map(function(x){
+      return '<div class="log-item"><i></i><div><div class="log-t">'+esc(x.t)+'</div>'+
+        '<div class="log-d">'+esc(x.who)+' · '+esc(x.at)+'</div></div></div>';
+    }).join("");
+
+  var kijkers=watchers(l.id);
 
   el.innerHTML=
     '<div class="detail-head">'+
       '<div class="detail-co">'+esc(l.bedrijf)+'</div>'+
       '<div class="detail-person">'+esc(l.contact)+' · '+esc(l.functie)+'</div>'+
-      '<div class="detail-id"><span class="pill f-'+l.fase+'">'+esc(faseLabel(l.fase))+'</span>'+
-        '<span class="mono" style="font-size:11px;color:var(--mist)">'+l.id+'</span>'+
-        '<span class="val" style="margin-left:auto;font-weight:500">'+euroFull(l.waarde)+'</span></div>'+
+      (kijkers.length?'<div style="margin-top:9px"><span class="watching">'+esc(kijkers.map(function(k){return (k.presence.naam||"Collega").split(" ")[0];}).join(", "))+' kijkt hier nu ook</span></div>':'')+
     '</div>'+
     '<div class="detail-body">'+
 
-      '<div class="blk"><span class="eyebrow">Doorschakelen</span>'+
-        '<div class="actions-grid">'+
-          '<button class="btn btn-sm" type="button" data-act="call" data-id="'+l.id+'">Bel</button>'+
-          '<button class="btn btn-sm" type="button" data-act="mail" data-id="'+l.id+'">Mail</button>'+
-          '<button class="btn btn-sm" type="button" data-act="meet" data-id="'+l.id+'">Meeting</button>'+
-          '<button class="btn btn-sm" type="button" data-act="touch" data-id="'+l.id+'">Contact gelogd</button>'+
-          '<button class="btn btn-sm btn-solid" type="button" data-act="next" data-id="'+l.id+'" style="grid-column:1/-1">Fase vooruit →</button>'+
-          '<button class="btn btn-sm" type="button" data-act="won" data-id="'+l.id+'">Gewonnen</button>'+
-          '<button class="btn btn-sm" type="button" data-act="lost" data-id="'+l.id+'">Verloren</button>'+
-        '</div>'+
-      '</div>'+
+      '<div class="blk"><div class="two">'+
+        '<button class="btn btn-lg btn-solid" type="button" data-act="call" data-id="'+l.id+'">☎ Bellen <span class="kbd">B</span></button>'+
+        '<button class="btn btn-lg" type="button" data-act="mail" data-id="'+l.id+'">✉ Mailen <span class="kbd">M</span></button>'+
+      '</div></div>'+
 
-      '<div class="blk"><span class="eyebrow">Traject</span><div class="stepper">'+steps+'</div></div>'+
+      '<div class="blk"><span class="eyebrow">Status</span><div class="steps">'+steps+
+        '<button class="step'+(l.status==="verloren"?" now":"")+'" type="button" data-status-set="verloren" data-id="'+l.id+'">'+
+        '<span class="idx">✕</span>Verloren<span class="kbd">0</span></button></div></div>'+
 
-      '<div class="blk"><span class="eyebrow">Gegevens</span>'+
+      '<div class="blk"><span class="eyebrow">Volgende stap</span>'+
+        '<input class="field" id="stapVeld" type="text" value="'+esc(l.stap||"")+'" placeholder="Wat moet er nu gebeuren?">'+
+        '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center">'+fuCell(l)+
+          '<button class="btn btn-sm" type="button" data-fuset="0" data-id="'+l.id+'">Vandaag</button>'+
+          '<button class="btn btn-sm" type="button" data-fuset="1" data-id="'+l.id+'">Morgen</button>'+
+          '<button class="btn btn-sm" type="button" data-fuset="7" data-id="'+l.id+'">Volgende week</button>'+
+        '</div></div>'+
+
+      '<div class="blk"><span class="eyebrow">Van wie is deze lead</span>'+
+        '<div style="display:flex;gap:6px;flex-wrap:wrap">'+
+          team.map(function(m){
+            return '<button class="chip" type="button" data-assign="'+m.id+'" data-id="'+l.id+'" aria-pressed="'+(l.eigenaar===m.id)+'">'+
+              '<span class="avatar sm">'+esc(m.id)+'</span>'+esc(m.naam)+'</button>';
+          }).join("")+
+          (l.eigenaar?'<button class="chip" type="button" data-assign="" data-id="'+l.id+'">Vrijgeven</button>':'')+
+        '</div></div>'+
+
+      '<div class="blk"><span class="eyebrow">Contact</span>'+
         '<dl class="facts">'+
-          '<dt>Mail</dt><dd><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></dd>'+
           '<dt>Tel</dt><dd class="mono">'+esc(l.tel)+'</dd>'+
+          '<dt>Mail</dt><dd><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></dd>'+
           '<dt>Stad</dt><dd>'+esc(l.stad)+'</dd>'+
-          '<dt>Bron</dt><dd>'+esc(l.bron)+'</dd>'+
-          '<dt>Type</dt><dd>'+esc(l.type)+'</dd>'+
-          '<dt>Follow-up</dt><dd>'+fuCell(l)+'</dd>'+
-          '<dt>Score</dt><dd class="num">'+l.score+' / 100</dd>'+
-          '<dt>Eigenaar</dt><dd>'+esc(TEAM[l.eigenaar].naam)+' · '+esc(TEAM[l.eigenaar].rol)+'</dd>'+
-        '</dl>'+
-        '<div class="chips" style="margin-top:10px">'+Object.keys(TEAM).map(function(k){
-          return '<button class="chip" type="button" data-assign="'+k+'" data-id="'+l.id+'" aria-pressed="'+(l.eigenaar===k)+'">'+k+'</button>';
-        }).join("")+'</div>'+
-      '</div>'+
+          '<dt>Bron</dt><dd>'+esc(l.bron)+(l.formulier?" (formulier)":"")+'</dd>'+
+          '<dt>Laatst</dt><dd>'+(l.dagen===0?"vandaag":l.dagen+" d geleden")+'</dd>'+
+        '</dl></div>'+
 
       '<div class="blk"><span class="eyebrow">Notitie voor het team</span>'+
-        '<textarea class="note" id="noteBox" placeholder="Wat moet je collega weten voor het volgende contact?">'+esc(l.notitie||"")+'</textarea>'+
-      '</div>'+
+        '<textarea class="field" id="notitieVeld" placeholder="Wat moet je collega weten?"></textarea>'+
+        '<button class="btn btn-sm" type="button" id="notitieBtn" style="margin-top:7px">Notitie opslaan</button></div>'+
 
-      '<div class="blk"><span class="eyebrow">Historiek</span><div class="timeline">'+tl+'</div></div>'+
+      '<div class="blk"><span class="eyebrow">Wat er al gebeurd is</span><div class="log">'+log+'</div></div>'+
     '</div>';
 }
 
-/* ---------------- persistentie ---------------- */
-function save(id){
-  var o=overrides[id];
-  if(!db||!o) return;
-  var clean={};
-  for(var k in o){ if(k.charAt(0)!=="_") clean[k]=o[k]; }
-  db.doc("leads/"+id).set(clean).catch(function(){});
-}
-function patch(id,data){
-  var o=overrides[id]||(overrides[id]={});
-  for(var k in data) o[k]=data[k];
-  o.gewijzigd=new Date().toLocaleDateString("nl-BE",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
-  save(id);
-  renderAll();
-}
-
-/* ---------------- acties ---------------- */
-function act(kind,id){
-  var l=merged(lead(id)); if(!l) return;
-  if(kind==="next"){
-    var i=faseIndex(l.fase);
-    if(i<4) patch(id,{fase:FASES[i+1].key,dagen:0});
-  } else if(kind==="won"){
-    patch(id,{fase:"gewonnen",dagen:0});
-  } else if(kind==="lost"){
-    patch(id,{fase:"verloren",dagen:0});
-  } else if(kind==="touch"){
-    patch(id,{dagen:0});
-  } else if(kind==="call"){
-    window.location.href="tel:"+l.tel.replace(/\s/g,"");
-  } else if(kind==="mail"){
-    window.location.href="mailto:"+l.email+"?subject="+encodeURIComponent("Opvolging "+l.bedrijf+" ("+l.id+")");
-  } else if(kind==="meet"){
-    patch(id,{stap:"Meeting ingepland — bevestiging sturen",dagen:0});
-  }
-}
-
-/* ---------------- render alles ---------------- */
 var raf=null;
-function renderAll(){
+function render(){
   if(raf) return;
   raf=requestAnimationFrame(function(){
     raf=null;
-    var pipeline = state.mode==="pipeline";
-    document.getElementById("listView").hidden = pipeline;
-    document.getElementById("boardView").classList.toggle("on", pipeline);
-    var mt=document.getElementById("modeToggle");
-    if(mt) mt.querySelectorAll("button").forEach(function(b){
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-mode")===state.mode));
+    var bord=state.mode==="bord";
+    document.getElementById("listView").hidden=bord;
+    document.getElementById("boardView").classList.toggle("on",bord);
+    document.querySelectorAll("#modeToggle button").forEach(function(b){
+      b.setAttribute("aria-pressed",String(b.getAttribute("data-mode")===state.mode));
     });
-    renderMeter(); renderKpis(); renderRail(); renderTypeSeg(); renderSeg();
-    if(pipeline) renderBoard(); else renderTable();
-    renderBulk(); renderDetail();
+    renderWho(); renderQueues(); renderFilters();
+    if(bord) renderBoard(); else renderList();
+    renderDetail(); renderPresence();
   });
 }
 
-/* ---------------- events ---------------- */
+/* ================= export ================= */
+function flashBtn(btn,msg){
+  if(!btn) return;
+  var old=btn.innerHTML; btn.disabled=true; btn.textContent=msg;
+  setTimeout(function(){ btn.innerHTML=old; btn.disabled=false; },1700);
+}
+function flashNote(msg){
+  var n=document.getElementById("footNote");
+  var old=n.textContent; n.textContent=msg;
+  setTimeout(function(){ n.textContent=old; },2500);
+}
+function csv(rows){
+  var kop=["ID","Bedrijf","Contact","Functie","Stad","Bron","Status","Van wie","Volgende stap","Datum","Laatst contact (d)"];
+  return "\ufeff"+[kop.join(";")].concat(rows.map(function(l){
+    return [l.id,l.bedrijf,l.contact,l.functie,l.stad,l.bron,label(l.status),naam(l.eigenaar),l.stap,l.followup||"",l.dagen]
+      .map(function(v){ v=String(v).replace(/"/g,'""'); return /[";\r\n]/.test(v)?'"'+v+'"':v; }).join(";");
+  })).join("\r\n");
+}
+function exporteer(btn){
+  var rows=visible();
+  if(!rows.length){ flashBtn(btn,"Niets te exporteren"); return; }
+  var data=csv(rows), naampje="leads-"+isoDay(0)+".csv";
+  if(dl){
+    dl.save({filename:naampje,data:data}).then(function(){ flashBtn(btn,"Klaar ✓"); },
+      function(e){ flashBtn(btn, e&&e.code==="declined"?"Geannuleerd":"Mislukt"); });
+  } else if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(data).then(function(){ flashBtn(btn,"Op klembord ✓"); },
+      function(){ flashBtn(btn,"Mislukt"); });
+  } else flashBtn(btn,"Hier niet mogelijk");
+}
+
+/* ================= sneltoetsenkaart ================= */
+var HELP = [
+  ["/","zoeken"],["J / K","vorige of volgende lead"],["1 – 5","status zetten"],["0","op verloren zetten"],
+  ["→","één status vooruit"],["C","lead overnemen"],["B","bellen"],["M","mailen"],
+  ["S","ster aan of uit"],["T","volgende stap vandaag"],["W","volgende stap volgende week"],
+  ["P","wisselen lijst / bord"],["Esc","selectie loslaten"],["?","deze kaart"]
+];
+function toonHelp(){
+  if(document.getElementById("helpBox")) return;
+  var d=document.createElement("div");
+  d.className="help"; d.id="helpBox"; d.setAttribute("role","dialog"); d.setAttribute("aria-label","Sneltoetsen");
+  d.innerHTML='<div class="help-card"><h2>Sneltoetsen</h2>'+
+    '<p style="margin:4px 0 0;color:var(--graphite);font-size:13.5px">Selecteer een lead en werk hem af zonder de muis.</p>'+
+    '<div class="help-grid">'+HELP.map(function(h){
+      var stukken=h[0].split(" ");
+      return '<span>'+stukken.map(function(k){
+        var scheiding = stukken.length>1 && (k==="/"||k==="–");
+        return scheiding ? '<span style="color:var(--mist)">'+esc(k)+'</span>' : '<span class="kbd">'+esc(k)+'</span>';
+      }).join(" ")+'</span><span>'+esc(h[1])+'</span>';
+    }).join("")+'</div>'+
+    '<button class="btn" type="button" id="helpClose" style="margin-top:18px">Sluiten</button></div>';
+  document.body.appendChild(d);
+  document.getElementById("helpClose").focus();
+}
+function sluitHelp(){ var d=document.getElementById("helpBox"); if(d) d.remove(); }
+
+/* ================= identiteit ================= */
+function zetMe(id){
+  var m=lid(id); if(!m) return;
+  me=m;
+  try{ localStorage.setItem("td-me",id); }catch(e){}
+  if(state.bak==="alles") state.bak="mijn";
+  pushPresence();
+  render();
+}
+function laadMe(){
+  var id=null;
+  try{ id=localStorage.getItem("td-me"); }catch(e){}
+  if(id && lid(id)) me=lid(id);
+  if(!me) state.bak="alles";
+}
+function voegLidToe(){
+  var n=window.prompt("Voornaam van de nieuwe collega:");
+  if(!n) return;
+  n=n.trim(); if(!n) return;
+  var letter=n.charAt(0).toUpperCase();
+  var i=1; while(lid(letter)){ letter=n.charAt(0).toUpperCase()+String(i++); }
+  team.push({id:letter,naam:n});
+  if(db) db.doc("team/leden").set({leden:team}).catch(function(){});
+  render();
+}
+
+/* ================= events ================= */
 document.addEventListener("click",function(e){
   var t=e.target.closest("button");
-  if(!t) {
-    if(e.target.closest("input,label,select")) return;
+  if(!t){
+    if(e.target.closest("input,label,textarea,select,a")) return;
     var pick=e.target.closest("tr[data-id],.card[data-id]");
-    if(pick){ state.selected=pick.getAttribute("data-id"); renderAll(); }
+    if(pick){ state.selected=pick.getAttribute("data-id"); pushPresence(); render(); }
     return;
   }
-
-  if(t.hasAttribute("data-view")){ state.view=t.getAttribute("data-view"); renderAll(); return; }
-  if(t.hasAttribute("data-bron")){ var b=t.getAttribute("data-bron"); state.bron=state.bron===b?null:b; renderAll(); return; }
-  if(t.hasAttribute("data-owner")){ var o=t.getAttribute("data-owner"); state.eigenaar=state.eigenaar===o?null:o; renderAll(); return; }
-  if(t.hasAttribute("data-fase")){ var f=t.getAttribute("data-fase"); state.fase=f||null; renderAll(); return; }
-  if(t.hasAttribute("data-assign")){ patch(t.getAttribute("data-id"),{eigenaar:t.getAttribute("data-assign")}); return; }
+  if(t.hasAttribute("data-me")){ zetMe(t.getAttribute("data-me")); return; }
+  if(t.hasAttribute("data-addlid")){ voegLidToe(); return; }
+  if(t.id==="meBtn"){ me=null; try{ localStorage.removeItem("td-me"); }catch(e2){} pushPresence(); render(); return; }
+  if(t.hasAttribute("data-bak")){ state.bak=t.getAttribute("data-bak"); render(); return; }
+  if(t.hasAttribute("data-status")){ var s=t.getAttribute("data-status"); state.status=s||null; render(); return; }
+  if(t.hasAttribute("data-owner")){ var o=t.getAttribute("data-owner"); state.eigenaar=state.eigenaar===o?null:o; render(); return; }
+  if(t.hasAttribute("data-mode")){ state.mode=t.getAttribute("data-mode"); render(); return; }
   if(t.hasAttribute("data-act")){ act(t.getAttribute("data-act"),t.getAttribute("data-id")); return; }
-  if(t.hasAttribute("data-mode")){ state.mode=t.getAttribute("data-mode"); renderAll(); return; }
-  if(t.hasAttribute("data-type")){ var ty=t.getAttribute("data-type"); state.type=ty||null; renderAll(); return; }
-  if(t.hasAttribute("data-bulkfu")){
-    var off=parseInt(t.getAttribute("data-bulkfu"),10);
-    selIds().forEach(function(id){ patch(id,{followup:isoDay(off)}); });
+  if(t.hasAttribute("data-status-set")){
+    var k=t.getAttribute("data-status-set");
+    patch(t.getAttribute("data-id"),{status:k,dagen:0},"Status → "+label(k));
     return;
   }
-  if(t.id==="bulkExport"){ exportRows(all().filter(function(l){return state.sel[l.id];}), t); return; }
-  if(t.id==="bulkClear"){ state.sel=Object.create(null); renderAll(); return; }
-
-  if(t.hasAttribute("data-quick")){
-    var q=t.getAttribute("data-quick");
-    if(q==="export"){ exportRows(visible(), t); return; }
-    if(q==="import"||q==="nieuw"){
-      flash(t, q==="nieuw" ? "Demo — formulier volgt" : "Demo — koppel je CSV");
-      return;
-    }
-    state.view=q; state.fase=null; state.bron=null; state.eigenaar=null;
-    if(q==="mijn") state.eigenaar=MIJ;
-    renderAll();
-    document.querySelector(".slide").scrollIntoView({behavior:"smooth",block:"start"});
+  if(t.hasAttribute("data-fuset")){
+    patch(t.getAttribute("data-id"),{followup:isoDay(parseInt(t.getAttribute("data-fuset"),10))});
     return;
   }
-
-  var th=t.closest("th[data-sort]");
-  if(th){
-    var k=th.getAttribute("data-sort");
-    if(state.sort.key===k) state.sort.dir=state.sort.dir==="asc"?"desc":"asc";
-    else state.sort={key:k,dir:(k==="bedrijf"||k==="bron"||k==="eigenaar")?"asc":"desc"};
-    renderAll();
+  if(t.hasAttribute("data-assign")){
+    var wie=t.getAttribute("data-assign");
+    patch(t.getAttribute("data-id"),{eigenaar:wie}, wie?("Toegewezen aan "+naam(wie)):"Vrijgegeven");
     return;
   }
-
+  if(t.id==="notitieBtn"){
+    var veld=document.getElementById("notitieVeld");
+    if(veld && veld.value.trim() && state.selected) patch(state.selected,{},veld.value.trim());
+    return;
+  }
+  if(t.id==="exportBtn"){ exporteer(t); return; }
+  if(t.id==="helpBtn"){ toonHelp(); return; }
+  if(t.id==="helpClose"){ sluitHelp(); return; }
   if(t.id==="themeBtn"){
     var cur=document.documentElement.getAttribute("data-theme");
-    var dark=cur? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme",dark?"light":"dark");
+    var donker=cur? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme",donker?"light":"dark");
     return;
   }
-  if(t.id==="resetBtn"){
-    Object.keys(overrides).forEach(function(id){
-      delete overrides[id];
-      if(db) db.doc("leads/"+id).delete().catch(function(){});
-    });
-    renderAll();
-    return;
+  var th=t.closest("th[data-sort]");
+  if(th){
+    var key=th.getAttribute("data-sort");
+    if(state.sort.key===key) state.sort.dir=state.sort.dir==="asc"?"desc":"asc";
+    else state.sort={key:key,dir:"asc"};
+    render();
   }
 });
 
-document.getElementById("q").addEventListener("input",function(e){
-  state.q=e.target.value; renderAll();
-});
+document.getElementById("q").addEventListener("input",function(e){ state.q=e.target.value; render(); });
 
 document.addEventListener("change",function(e){
   var t=e.target;
-  if(!t||!t.getAttribute) return;
-  if(t.id==="cbAll"){
-    var on=t.checked;
-    visible().forEach(function(l){ if(on) state.sel[l.id]=true; else delete state.sel[l.id]; });
-    renderAll(); return;
+  if(t && t.getAttribute && t.hasAttribute("data-fu")) patch(t.getAttribute("data-fu"),{followup:t.value});
+});
+document.addEventListener("focusout",function(e){
+  if(e.target.id==="stapVeld" && state.selected){
+    var l=merged(findLead(state.selected));
+    if(l && e.target.value!==(l.stap||"")) patch(state.selected,{stap:e.target.value},"Volgende stap: "+e.target.value);
   }
-  if(t.hasAttribute("data-pick")){
-    var id=t.getAttribute("data-pick");
-    if(t.checked) state.sel[id]=true; else delete state.sel[id];
-    renderAll(); return;
-  }
-  if(t.hasAttribute("data-fu")){ patch(t.getAttribute("data-fu"),{followup:t.value}); return; }
-  if(t.id==="bulkFase" && t.value){ selIds().forEach(function(id){ patch(id,{fase:t.value,dagen:0}); }); return; }
-  if(t.id==="bulkOwner" && t.value){ selIds().forEach(function(id){ patch(id,{eigenaar:t.value}); }); return; }
 });
 
-/* ---------------- slepen tussen kolommen ---------------- */
+/* slepen op het bord */
 document.addEventListener("dragstart",function(e){
   var c=e.target.closest&&e.target.closest(".card[data-id]");
   if(!c) return;
-  dragId=c.getAttribute("data-id");
-  c.classList.add("dragging");
+  dragId=c.getAttribute("data-id"); c.classList.add("dragging");
   if(e.dataTransfer){ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData("text/plain",dragId); }
 });
 document.addEventListener("dragend",function(){
@@ -1381,7 +986,7 @@ document.addEventListener("dragend",function(){
 });
 document.addEventListener("dragover",function(e){
   if(!dragId) return;
-  var col=e.target.closest&&e.target.closest(".col[data-fase]");
+  var col=e.target.closest&&e.target.closest(".col[data-status]");
   if(!col) return;
   e.preventDefault();
   if(e.dataTransfer) e.dataTransfer.dropEffect="move";
@@ -1390,62 +995,68 @@ document.addEventListener("dragover",function(e){
 });
 document.addEventListener("drop",function(e){
   if(!dragId) return;
-  var col=e.target.closest&&e.target.closest(".col[data-fase]");
+  var col=e.target.closest&&e.target.closest(".col[data-status]");
   if(!col) return;
   e.preventDefault();
-  var id=dragId; dragId=null;
-  col.classList.remove("drop");
+  var id=dragId; dragId=null; col.classList.remove("drop");
   state.selected=id;
-  patch(id,{fase:col.getAttribute("data-fase"),dagen:0});
-});
-
-document.addEventListener("input",function(e){
-  if(e.target.id==="noteBox"){
-    var id=state.selected;
-    var o=overrides[id]||(overrides[id]={});
-    o.notitie=e.target.value;
-    clearTimeout(o._t);
-    o._t=setTimeout(function(){ var c={}; for(var k in o){ if(k!=="_t") c[k]=o[k]; } overrides[id]=c; save(id); },600);
-  }
+  patch(id,{status:col.getAttribute("data-status"),dagen:0},"Status → "+label(col.getAttribute("data-status")));
 });
 
 document.addEventListener("keydown",function(e){
   var tag=(e.target.tagName||"").toLowerCase();
-  var typing = tag==="input"||tag==="textarea";
-  if(e.key==="/" && !typing){ e.preventDefault(); document.getElementById("q").focus(); return; }
-  if(e.key==="Escape"){ if(typing){ e.target.blur(); } else { state.selected=null; renderAll(); } return; }
-  if(typing) return;
+  var typt = tag==="input"||tag==="textarea";
+  if(e.key==="Escape"){ if(document.getElementById("helpBox")) sluitHelp(); else if(typt) e.target.blur(); else { state.selected=null; pushPresence(); render(); } return; }
+  if(typt) return;
+  if(e.key==="/"){ e.preventDefault(); document.getElementById("q").focus(); return; }
+  if(e.key==="?"){ toonHelp(); return; }
+  if(e.key==="p"||e.key==="P"){ state.mode=state.mode==="lijst"?"bord":"lijst"; render(); return; }
 
-  var rows=visible();
+  var rows=visible(state.mode==="bord");
   var i=rows.map(function(r){return r.id;}).indexOf(state.selected);
-  if(e.key==="j"||e.key==="ArrowDown"){ e.preventDefault(); state.selected=rows[Math.min(rows.length-1,i+1)]?rows[Math.min(rows.length-1,i+1)].id:(rows[0]&&rows[0].id); renderAll(); return; }
-  if(e.key==="k"||e.key==="ArrowUp"){ e.preventDefault(); state.selected=rows[Math.max(0,i-1)]?rows[Math.max(0,i-1)].id:(rows[0]&&rows[0].id); renderAll(); return; }
-  if(e.key==="ArrowRight" && state.selected){ e.preventDefault(); act("next",state.selected); return; }
-  if(state.selected && "1234567".indexOf(e.key)>-1){ patch(state.selected,{fase:FASES[parseInt(e.key,10)-1].key,dagen:0}); return; }
-  if(e.key==="p"||e.key==="P"){ state.mode=state.mode==="lijst"?"pipeline":"lijst"; renderAll(); return; }
-  var quick={v:"vandaag",h:"hot",s:"stil",m:"mijn",a:"alle",o:"open"}[e.key.toLowerCase()];
-  if(quick){ state.view=quick; state.eigenaar=quick==="mijn"?MIJ:null; renderAll(); }
+  if(e.key==="j"||e.key==="ArrowDown"){ e.preventDefault(); var n1=rows[Math.min(rows.length-1,i+1)]||rows[0]; if(n1){ state.selected=n1.id; pushPresence(); render(); } return; }
+  if(e.key==="k"||e.key==="ArrowUp"){ e.preventDefault(); var n2=rows[Math.max(0,i-1)]||rows[0]; if(n2){ state.selected=n2.id; pushPresence(); render(); } return; }
+  if(!state.selected) return;
+
+  if(e.key==="ArrowRight"){ e.preventDefault(); act("next",state.selected); return; }
+  if("12345".indexOf(e.key)>-1){ var st=STATUS[parseInt(e.key,10)-1]; patch(state.selected,{status:st.key,dagen:0},"Status → "+st.label); return; }
+  if(e.key==="0"){ act("lost",state.selected); return; }
+  var k2=e.key.toLowerCase();
+  if(k2==="c"){ act("claim",state.selected); return; }
+  if(k2==="b"){ act("call",state.selected); return; }
+  if(k2==="m"){ act("mail",state.selected); return; }
+  if(k2==="s"){ act("star",state.selected); return; }
+  if(k2==="t"){ patch(state.selected,{followup:isoDay(0)}); return; }
+  if(k2==="w"){ patch(state.selected,{followup:isoDay(7)}); return; }
 });
 
-/* ---------------- gedeelde opslag (optioneel) ---------------- */
-renderAll();
+/* ================= starten ================= */
+laadMe();
+render();
 
 if(window.claude && typeof window.claude.use==="function"){
   window.claude.use("downloads").then(function(d){ if(d) dl=d; }).catch(function(){});
+
   window.claude.use("db").then(function(store){
     if(!store) return;
     db=store;
-    document.getElementById("syncBadge").classList.add("live");
-    document.getElementById("syncText").textContent="Live gesynct";
     db.collection("leads").onSnapshot(function(snap){
       var next=Object.create(null);
       snap.docs.forEach(function(d){ next[d.id]=d.data()||{}; });
-      overrides=next;
-      renderAll();
-    },function(){
-      document.getElementById("syncBadge").classList.remove("live");
-      document.getElementById("syncText").textContent="Offline — lokaal";
-    });
+      overrides=next; render();
+    },function(){});
+    db.doc("team/leden").onSnapshot(function(d){
+      var data=d.exists&&d.data();
+      if(data && data.leden && data.leden.length){ team=data.leden; if(me) me=lid(me.id)||me; render(); }
+    },function(){});
+  }).catch(function(){});
+
+  window.claude.use("room").then(function(r){
+    if(!r) return;
+    room=r;
+    room.onPeers(function(change){ peers=change.peers||[]; render(); },function(){});
+    pushPresence();
+    setInterval(pushPresence,25000);
   }).catch(function(){});
 }
 })();
