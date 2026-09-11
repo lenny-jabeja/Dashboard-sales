@@ -181,10 +181,10 @@ tr:hover .rowacts,tr[aria-selected="true"] .rowacts{opacity:1}
 .pill.s-nieuw{border-style:dashed}
 .pill.s-contact{color:var(--ink-2);border-color:var(--line-2)}
 .pill.s-contact::before{background:currentColor;opacity:.35}
-.pill.s-voorstel{background:color-mix(in srgb,var(--ink) 22%,var(--surface));border-color:transparent;color:var(--ink)}
-.pill.s-voorstel::before{background:currentColor;opacity:.7}
-.pill.s-opvolgen{background:color-mix(in srgb,var(--ink) 62%,var(--surface));border-color:transparent;color:var(--surface)}
-.pill.s-opvolgen::before{background:currentColor}
+.pill.s-gekwalificeerd{background:color-mix(in srgb,var(--ink) 22%,var(--surface));border-color:transparent;color:var(--ink)}
+.pill.s-gekwalificeerd::before{background:currentColor;opacity:.7}
+.pill.s-offerte{background:color-mix(in srgb,var(--ink) 62%,var(--surface));border-color:transparent;color:var(--surface)}
+.pill.s-offerte::before{background:currentColor}
 .pill.s-gewonnen{background:var(--inv-ground);border-color:var(--inv-ground);color:var(--inv-ink)}
 .pill.s-gewonnen::before{background:currentColor}
 .pill.s-verloren{border-style:dotted;color:var(--mist)}
@@ -204,7 +204,7 @@ tr:hover .rowacts,tr[aria-selected="true"] .rowacts{opacity:1}
 /* ============ bord ============ */
 .board{display:none;overflow-x:auto;flex:1}
 .board.on{display:flex}
-.col{border-right:1px solid var(--line);min-width:206px;flex:1 0 206px;display:flex;flex-direction:column;background:var(--surface)}
+.col{border-right:1px solid var(--line);min-width:172px;flex:1 1 0;display:flex;flex-direction:column;background:var(--surface)}
 .col:last-child{border-right:0}
 .col.drop{background:var(--surface-3)}
 .col-head{padding:11px 12px;border-bottom:1px solid var(--line);background:var(--surface-2);display:flex;align-items:baseline;gap:8px;position:sticky;top:0;z-index:1}
@@ -215,6 +215,7 @@ tr:hover .rowacts,tr[aria-selected="true"] .rowacts{opacity:1}
 .card.dragging{opacity:.4}
 .card[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
 .card-top{display:flex;align-items:flex-start;gap:8px}
+.card-top .star{flex:none;margin-top:-3px;margin-left:-3px}
 .card-co{font-weight:600;font-size:13px;line-height:1.25}
 .card-sub{font-size:11.5px;color:var(--graphite);margin-top:2px}
 .card-foot{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
@@ -294,6 +295,7 @@ textarea.field{resize:vertical;min-height:56px}
     </div>
     <div class="presence" id="presence" hidden></div>
     <div class="who" id="who"></div>
+    <button class="btn btn-solid" id="pipelineBtn" type="button">▦ Pipeline <span class="kbd">P</span></button>
     <button class="btn btn-sm" id="helpBtn" type="button">Sneltoetsen <span class="kbd">?</span></button>
     <button class="btn btn-sm" id="themeBtn" type="button">Thema</button>
   </header>
@@ -323,10 +325,6 @@ textarea.field{resize:vertical;min-height:56px}
           <input id="q" type="search" placeholder="Zoek bedrijf, contact of stad…" autocomplete="off">
           <span class="kbd">/</span>
         </label>
-        <div class="seg" id="modeToggle" role="group" aria-label="Weergave">
-          <button type="button" data-mode="lijst" aria-pressed="true">Lijst</button>
-          <button type="button" data-mode="bord" aria-pressed="false">Bord</button>
-        </div>
         <button class="btn btn-sm" id="exportBtn" type="button">Exporteer</button>
       </div>
 
@@ -376,15 +374,15 @@ textarea.field{resize:vertical;min-height:56px}
 
 /* ================= status ================= */
 var STATUS = [
-  {key:"nieuw",    label:"Nieuw",         hint:"binnengekomen, nog niets mee gedaan"},
-  {key:"contact",  label:"Contact gehad", hint:"gebeld of gemaild, wacht op vervolg"},
-  {key:"voorstel", label:"Voorstel",      hint:"offerte of voorstel verstuurd"},
-  {key:"opvolgen", label:"Opvolgen",      hint:"wacht op hun antwoord"},
-  {key:"gewonnen", label:"Gewonnen",      hint:"klant geworden"},
-  {key:"verloren", label:"Verloren",      hint:"gaat niet door"}
+  {key:"nieuw",          label:"Nieuw",          hint:"binnengekomen, nog niets mee gedaan"},
+  {key:"contact",        label:"Gecontacteerd",  hint:"gebeld of gemaild"},
+  {key:"gekwalificeerd", label:"Gekwalificeerd", hint:"past bij ons, er is interesse"},
+  {key:"offerte",        label:"Offerte",        hint:"offerte verstuurd, wacht op antwoord"},
+  {key:"gewonnen",       label:"Gewonnen",       hint:"klant geworden"},
+  {key:"verloren",       label:"Verloren",       hint:"gaat niet door"}
 ];
-var OPEN   = ["nieuw","contact","voorstel","opvolgen"];
-var BOARD  = ["nieuw","contact","voorstel","opvolgen","gewonnen"];
+var OPEN   = ["nieuw","contact","gekwalificeerd","offerte"];
+var BOARD  = ["nieuw","contact","gekwalificeerd","offerte","gewonnen"];
 function label(k){ for(var i=0;i<STATUS.length;i++) if(STATUS[i].key===k) return STATUS[i].label; return k; }
 function sIndex(k){ for(var i=0;i<STATUS.length;i++) if(STATUS[i].key===k) return i; return 0; }
 function isOpen(l){ return OPEN.indexOf(l.status)>-1; }
@@ -415,20 +413,20 @@ function nu(){ return new Date().toLocaleDateString("nl-BE",{day:"numeric",month
    eigenaar ("" = vrij), dagen sinds contact, follow-up (dagen, null = geen),
    volgende stap, ster                                                        */
 var RAW = [
-["L-1051","Nova Logistics","Tom Peeters","COO","Antwerpen","Doorverwijzing",0,"opvolgen","L",1,-1,"Contract nalezen met jurist",1],
-["L-1055","Helix Software","Yasmine Bouzid","Head of Growth","Brussel","Webinar",0,"voorstel","Y",1,4,"Demo inplannen met hun team",1],
-["L-1050","Skyline Vastgoed","Olivier Dupont","Marketing manager","Luik","Webinar",0,"opvolgen","Y",2,0,"Bellen over de voorwaarden",1],
-["L-1058","Nordic Kitchen","Emma Lindqvist","Country manager","Brussel","Doorverwijzing",0,"opvolgen","W",1,1,"Startdatum campagne vastleggen",0],
-["L-1042","Vandersteen Interieur","Karel Vandersteen","Zaakvoerder","Hasselt","Beurs",0,"voorstel","L",2,0,"Offerte versie 2 doorsturen",1],
-["L-1041","Trivium Advocaten","Ellen Baert","Partner","Brussel","Doorverwijzing",0,"voorstel","W",5,-1,"Referenties uit hun sector bezorgen",0],
-["L-1048","Delacroix Wine","Pierre Delacroix","Sales director","Namen","Doorverwijzing",0,"voorstel","L",2,2,"Nabellen over het budget",0],
-["L-1049","Cobalt Labs","Wouter Simoens","Founder","Gent","Webinar",0,"voorstel","Y",3,4,"Scope afstemmen",0],
+["L-1051","Nova Logistics","Tom Peeters","COO","Antwerpen","Doorverwijzing",0,"offerte","L",1,-1,"Contract nalezen met jurist",1],
+["L-1055","Helix Software","Yasmine Bouzid","Head of Growth","Brussel","Webinar",0,"gekwalificeerd","Y",1,4,"Demo inplannen met hun team",1],
+["L-1050","Skyline Vastgoed","Olivier Dupont","Marketing manager","Luik","Webinar",0,"offerte","Y",2,0,"Bellen over de voorwaarden",1],
+["L-1058","Nordic Kitchen","Emma Lindqvist","Country manager","Brussel","Doorverwijzing",0,"gewonnen","W",1,1,"Startdatum campagne vastleggen",0],
+["L-1042","Vandersteen Interieur","Karel Vandersteen","Zaakvoerder","Hasselt","Beurs",0,"offerte","L",2,0,"Offerte versie 2 doorsturen",1],
+["L-1041","Trivium Advocaten","Ellen Baert","Partner","Brussel","Doorverwijzing",0,"offerte","W",5,-1,"Referenties uit hun sector bezorgen",0],
+["L-1048","Delacroix Wine","Pierre Delacroix","Sales director","Namen","Doorverwijzing",0,"offerte","L",2,2,"Nabellen over het budget",0],
+["L-1049","Cobalt Labs","Wouter Simoens","Founder","Gent","Webinar",0,"gekwalificeerd","Y",3,4,"Scope afstemmen",0],
 ["L-1060","Terra Bouwgroep","Dries Wouters","Marketing manager","Brugge","Beurs",0,"contact","W",3,1,"Intake plannen volgende week",0],
-["L-1044","Van Hulle Transport","Jonas Van Hulle","Fleet manager","Zele","Doorverwijzing",0,"opvolgen","L",4,-2,"Laatste vragen doornemen",0],
+["L-1044","Van Hulle Transport","Jonas Van Hulle","Fleet manager","Zele","Doorverwijzing",0,"offerte","L",4,-2,"Laatste vragen doornemen",0],
 ["L-1026","Frisco Foods","Nicolas Gillis","Supply lead","Antwerpen","Beurs",0,"gewonnen","Y",16,null,"",0],
-["L-1039","Brasserie De Kade","Ineke Maes","Marketing lead","Gent","LinkedIn",0,"contact","W",4,3,"Contentplan voorstellen",0],
-["L-1061","Orbit Fitness","Nele Aerts","Franchise manager","Antwerpen","LinkedIn",0,"contact","W",5,-3,"Cijfers per vestiging opvragen",0],
-["L-1053","Praktijk Solis","Hanne Coppens","Praktijkhouder","Leuven","Webinar",0,"contact","W",2,2,"Voorstel lokale campagne maken",0],
+["L-1039","Brasserie De Kade","Ineke Maes","Marketing lead","Gent","LinkedIn",0,"gekwalificeerd","W",4,3,"Contentplan voorstellen",0],
+["L-1061","Orbit Fitness","Nele Aerts","Franchise manager","Antwerpen","LinkedIn",0,"gekwalificeerd","W",5,-3,"Cijfers per vestiging opvragen",0],
+["L-1053","Praktijk Solis","Hanne Coppens","Praktijkhouder","Leuven","Webinar",0,"gekwalificeerd","W",2,2,"Voorstel lokale campagne maken",0],
 ["L-1059","Atelier Noor","Noor El Amrani","Eigenaar","Brussel","LinkedIn",0,"contact","L",2,0,"Beeldmateriaal opvragen",0],
 ["L-1057","Aquafleur Tuinen","Lotte Vermeulen","Zaakvoerder","Turnhout","Google",1,"nieuw","",3,null,"",0],
 ["L-1036","Elektro Ghys","Pieter Ghys","Zaakvoerder","Aalst","Beurs",0,"contact","Y",8,-4,"Herinnering sturen na de beurs",0],
@@ -568,6 +566,22 @@ function visible(negeerStatus){
   return rows;
 }
 
+function boardRows(){
+  var q=state.q.trim().toLowerCase();
+  var rows=all().filter(function(l){
+    if(l.status==="verloren") return false;
+    if(state.eigenaar && l.eigenaar!==state.eigenaar) return false;
+    if(q && (l.bedrijf+" "+l.contact+" "+l.stad+" "+l.bron+" "+l.stap+" "+l.id).toLowerCase().indexOf(q)===-1) return false;
+    return true;
+  });
+  rows.sort(function(a,b){
+    if(a.ster!==b.ster) return a.ster?-1:1;
+    return a.fuDagen-b.fuDagen;
+  });
+  return rows;
+}
+function currentRows(){ return state.mode==="bord" ? boardRows() : visible(); }
+
 /* ================= presence ================= */
 function watchers(id){
   return peers.filter(function(p){
@@ -630,16 +644,21 @@ function renderQueues(){
 }
 
 function renderFilters(){
-  var L=all(), f=document.getElementById("filters");
-  var html='<div class="seg">'+EXTRA.map(function(b){
-    return '<button type="button" data-bak="'+b.key+'" aria-pressed="'+(state.bak===b.key)+'">'+esc(b.label)+'</button>';
-  }).join("")+'</div>';
-  html+='<button class="chip" type="button" data-status="" aria-pressed="'+(state.status===null)+'">Elke status</button>';
-  html+=STATUS.map(function(s){
-    var n=L.filter(function(l){return l.status===s.key;}).length;
-    if(!n) return "";
-    return '<button class="chip" type="button" data-status="'+s.key+'" aria-pressed="'+(state.status===s.key)+'">'+esc(s.label)+' <span class="num" style="opacity:.6">'+n+'</span></button>';
-  }).join("");
+  var L=all(), f=document.getElementById("filters"), bord=state.mode==="bord";
+  var html="";
+  if(bord){
+    html+='<span class="eyebrow">Sleep een kaart naar het volgende vakje</span>';
+  } else {
+    html+='<div class="seg">'+EXTRA.map(function(b){
+      return '<button type="button" data-bak="'+b.key+'" aria-pressed="'+(state.bak===b.key)+'">'+esc(b.label)+'</button>';
+    }).join("")+'</div>';
+    html+='<button class="chip" type="button" data-status="" aria-pressed="'+(state.status===null)+'">Elke status</button>';
+    html+=STATUS.map(function(s){
+      var n=L.filter(function(l){return l.status===s.key;}).length;
+      if(!n) return "";
+      return '<button class="chip" type="button" data-status="'+s.key+'" aria-pressed="'+(state.status===s.key)+'">'+esc(s.label)+' <span class="num" style="opacity:.6">'+n+'</span></button>';
+    }).join("");
+  }
   html+='<span style="width:1px;height:20px;background:var(--line)"></span>';
   html+=team.map(function(m){
     var n=L.filter(function(l){return l.eigenaar===m.id && isOpen(l);}).length;
@@ -692,11 +711,11 @@ function renderList(){
 }
 
 function renderBoard(){
-  var rows=visible(true), per={};
+  var rows=boardRows(), per={};
   BOARD.forEach(function(k){ per[k]=[]; });
   rows.forEach(function(l){ if(per[l.status]) per[l.status].push(l); });
   var c=document.getElementById("count");
-  if(c) c.textContent=rows.length+" van "+LEADS.length;
+  if(c) c.textContent=rows.length+" leads op het bord";
 
   document.getElementById("boardView").innerHTML=BOARD.map(function(k){
     var lijst=per[k];
@@ -705,7 +724,9 @@ function renderBoard(){
       '<div class="col-body">'+(lijst.length?lijst.map(function(l){
         var kijkers=watchers(l.id);
         return '<article class="card" draggable="true" data-id="'+l.id+'" aria-selected="'+(l.id===state.selected)+'">'+
-          '<div class="card-top"><div><div class="card-co">'+esc(l.bedrijf)+'</div>'+
+          '<div class="card-top">'+
+            '<button class="star'+(l.ster?" on":"")+'" type="button" data-act="star" data-id="'+l.id+'" aria-label="Markeer als belangrijk" aria-pressed="'+l.ster+'">'+(l.ster?"★":"☆")+'</button>'+
+            '<div><div class="card-co">'+esc(l.bedrijf)+'</div>'+
             '<div class="card-sub">'+esc(l.contact)+'</div></div>'+avatar(l.eigenaar,"sm")+'</div>'+
           (kijkers.length?'<span class="watching">'+esc((kijkers[0].presence.naam||"Collega").split(" ")[0])+' kijkt hier</span>':'')+
           '<div class="card-foot">'+fuCell(l)+
@@ -800,9 +821,9 @@ function render(){
     var bord=state.mode==="bord";
     document.getElementById("listView").hidden=bord;
     document.getElementById("boardView").classList.toggle("on",bord);
-    document.querySelectorAll("#modeToggle button").forEach(function(b){
-      b.setAttribute("aria-pressed",String(b.getAttribute("data-mode")===state.mode));
-    });
+    var pb=document.getElementById("pipelineBtn");
+    pb.innerHTML = bord ? '☰ Lijst <span class="kbd">P</span>' : '▦ Pipeline <span class="kbd">P</span>';
+    pb.setAttribute("aria-pressed", String(bord));
     renderWho(); renderQueues(); renderFilters();
     if(bord) renderBoard(); else renderList();
     renderDetail(); renderPresence();
@@ -904,10 +925,10 @@ document.addEventListener("click",function(e){
   if(t.hasAttribute("data-me")){ zetMe(t.getAttribute("data-me")); return; }
   if(t.hasAttribute("data-addlid")){ voegLidToe(); return; }
   if(t.id==="meBtn"){ me=null; try{ localStorage.removeItem("td-me"); }catch(e2){} pushPresence(); render(); return; }
-  if(t.hasAttribute("data-bak")){ state.bak=t.getAttribute("data-bak"); render(); return; }
+  if(t.hasAttribute("data-bak")){ state.bak=t.getAttribute("data-bak"); state.mode="lijst"; render(); return; }
   if(t.hasAttribute("data-status")){ var s=t.getAttribute("data-status"); state.status=s||null; render(); return; }
   if(t.hasAttribute("data-owner")){ var o=t.getAttribute("data-owner"); state.eigenaar=state.eigenaar===o?null:o; render(); return; }
-  if(t.hasAttribute("data-mode")){ state.mode=t.getAttribute("data-mode"); render(); return; }
+  if(t.id==="pipelineBtn"){ state.mode=state.mode==="bord"?"lijst":"bord"; render(); return; }
   if(t.hasAttribute("data-act")){ act(t.getAttribute("data-act"),t.getAttribute("data-id")); return; }
   if(t.hasAttribute("data-status-set")){
     var k=t.getAttribute("data-status-set");
@@ -999,7 +1020,7 @@ document.addEventListener("keydown",function(e){
   if(e.key==="?"){ toonHelp(); return; }
   if(e.key==="p"||e.key==="P"){ state.mode=state.mode==="lijst"?"bord":"lijst"; render(); return; }
 
-  var rows=visible(state.mode==="bord");
+  var rows=currentRows();
   var i=rows.map(function(r){return r.id;}).indexOf(state.selected);
   if(e.key==="j"||e.key==="ArrowDown"){ e.preventDefault(); var n1=rows[Math.min(rows.length-1,i+1)]||rows[0]; if(n1){ state.selected=n1.id; pushPresence(); render(); } return; }
   if(e.key==="k"||e.key==="ArrowUp"){ e.preventDefault(); var n2=rows[Math.max(0,i-1)]||rows[0]; if(n2){ state.selected=n2.id; pushPresence(); render(); } return; }
